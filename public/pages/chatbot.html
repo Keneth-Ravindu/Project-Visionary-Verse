@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visionary Verse | Chatbot</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <script defer src="../assets/js/chatbot.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">VV</div>
+        <div class="brand-text">
+          <div class="brand-name">Visionary Verse</div>
+          <div class="brand-role">Chatbot</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-link" href="./dashboard-admin.html">Dashboard</a>
+        <a class="nav-link" href="./clients.html">Clients</a>
+        <a class="nav-link" href="./projects.html">Projects</a>
+        <a class="nav-link" href="./tasks.html">Tasks</a>
+        <a class="nav-link" href="./approvals.html">Approvals</a>
+        <a class="nav-link" href="./reports.html">Reports</a>
+        <a class="nav-link" href="./dss.html">DSS</a>
+        <a class="nav-link" href="./notifications.html">Notifications</a>
+        <a class="nav-link active" href="./chatbot.html">Chatbot</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">Help Chatbot</h1>
+          <p class="page-subtitle">Ask about system features, project status, approvals, and tasks.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="btn btn-outline" id="clearChat">Clear</button>
+        </div>
+      </header>
+
+      <section class="card">
+        <div class="chat-wrap">
+          <div class="chat-box" id="chatBox">
+            <div class="msg bot">
+              Hi! I’m the Visionary Verse assistant. Try: “How do I approve a deliverable?” or “Show my tasks”.
+            </div>
+          </div>
+
+          <div class="chat-input">
+            <input class="input" id="chatInput" placeholder="Type a message..." />
+            <button class="btn" id="sendBtn">Send</button>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          UI only. Later: send message to <b>/api/chatbot/message</b> and respond using MySQL intent table.
+        </div>
+      </section>
+
+      <footer class="footer">© Visionary Verse — Chatbot</footer>
+    </main>
+  </div>
+</body>
+</html>

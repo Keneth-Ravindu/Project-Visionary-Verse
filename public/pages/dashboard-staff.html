@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visionary Verse | Staff Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <script defer src="../assets/js/app.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">VV</div>
+        <div class="brand-text">
+          <div class="brand-name">Visionary Verse</div>
+          <div class="brand-role">Team Member</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-link active" href="./dashboard-staff.html">Dashboard</a>
+        <a class="nav-link" href="./projects.html">Projects</a>
+        <a class="nav-link" href="./tasks.html">My Tasks</a>
+        <a class="nav-link" href="./approvals.html">Deliverables</a>
+        <a class="nav-link" href="./notifications.html">Notifications</a>
+        <a class="nav-link" href="./chatbot.html">Chatbot</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">Staff Dashboard</h1>
+          <p class="page-subtitle">Your tasks, deadlines, and quick status updates.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="icon-btn" id="notifBtn" aria-label="Notifications">
+            🔔 <span class="badge" id="notifCount">2</span>
+          </button>
+          <div class="profile">
+            <div class="avatar">S</div>
+            <div class="profile-meta">
+              <div class="profile-name">Sam</div>
+              <div class="profile-email">sam@visionaryverse.com</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="dropdown" id="notifDropdown" hidden>
+        <div class="dropdown-header">Notifications</div>
+        <a class="dropdown-item" href="./tasks.html">A task was assigned to you: “Keyword Research”</a>
+        <a class="dropdown-item" href="./tasks.html">Task moved to Review: “Ad Copy Draft”</a>
+      </section>
+
+      <section class="grid grid-4">
+        <div class="card stat">
+          <div class="stat-label">My Open Tasks</div>
+          <div class="stat-value">8</div>
+          <div class="stat-hint">2 high priority</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-label">Due This Week</div>
+          <div class="stat-value">3</div>
+          <div class="stat-hint">Stay on track</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-label">In Review</div>
+          <div class="stat-value">2</div>
+          <div class="stat-hint">Waiting feedback</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-label">Completed</div>
+          <div class="stat-value">14</div>
+          <div class="stat-hint">This month</div>
+        </div>
+      </section>
+
+      <section class="grid grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h2>My Tasks (Today)</h2>
+            <a class="link" href="./tasks.html">Open tasks</a>
+          </div>
+
+          <div class="table">
+            <div class="t-row t-head">
+              <div>Task</div><div>Project</div><div>Priority</div><div>Status</div><div>Due</div>
+            </div>
+
+            <div class="t-row">
+              <div>Keyword Research</div><div>SEO Optimization</div>
+              <div><span class="pill pill-danger">High</span></div>
+              <div><span class="pill pill-info">To Do</span></div>
+              <div>Today</div>
+            </div>
+            <div class="t-row">
+              <div>Create Post Designs</div><div>Social Media Content</div>
+              <div><span class="pill pill-warn">Medium</span></div>
+              <div><span class="pill pill-good">In Progress</span></div>
+              <div>Tomorrow</div>
+            </div>
+            <div class="t-row">
+              <div>Ad Copy Draft</div><div>Ads Campaign</div>
+              <div><span class="pill pill-warn">Medium</span></div>
+              <div><span class="pill pill-warn">Review</span></div>
+              <div>2026-02-28</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Quick Actions</h2>
+            <span class="muted">UI only</span>
+          </div>
+
+          <div class="stack">
+            <button class="btn">+ Create Task</button>
+            <button class="btn btn-outline">Upload Deliverable</button>
+            <button class="btn btn-outline">Update Task Status</button>
+            <div class="note">
+              Tip: keep statuses updated so clients get real-time notifications.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">© Visionary Verse — Staff Dashboard</footer>
+    </main>
+  </div>
+</body>
+</html>

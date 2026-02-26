@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visionary Verse | Client Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <script defer src="../assets/js/app.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">VV</div>
+        <div class="brand-text">
+          <div class="brand-name">Visionary Verse</div>
+          <div class="brand-role">Client</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-link active" href="./dashboard-client.html">Dashboard</a>
+        <a class="nav-link" href="./projects.html">My Projects</a>
+        <a class="nav-link" href="./approvals.html">Approvals</a>
+        <a class="nav-link" href="./reports.html">Reports</a>
+        <a class="nav-link" href="./notifications.html">Notifications</a>
+        <a class="nav-link" href="./chatbot.html">Chatbot</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">Client Dashboard</h1>
+          <p class="page-subtitle">Track project progress and approve deliverables.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="icon-btn" id="notifBtn" aria-label="Notifications">
+            🔔 <span class="badge" id="notifCount">1</span>
+          </button>
+          <div class="profile">
+            <div class="avatar">N</div>
+            <div class="profile-meta">
+              <div class="profile-name">Nova Foods</div>
+              <div class="profile-email">client@novafoods.com</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="dropdown" id="notifDropdown" hidden>
+        <div class="dropdown-header">Notifications</div>
+        <a class="dropdown-item" href="./approvals.html">New deliverable uploaded for approval (SEO Report v1)</a>
+      </section>
+
+      <section class="grid grid-4">
+        <div class="card stat">
+          <div class="stat-label">Active Projects</div>
+          <div class="stat-value">2</div>
+          <div class="stat-hint">In progress</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-label">Pending Approvals</div>
+          <div class="stat-value">1</div>
+          <div class="stat-hint">Needs your review</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-label">Tasks Completed</div>
+          <div class="stat-value">32</div>
+          <div class="stat-hint">Across projects</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-label">Overall Progress</div>
+          <div class="stat-value">74%</div>
+          <div class="stat-hint">This month</div>
+        </div>
+      </section>
+
+      <section class="grid grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h2>My Projects</h2>
+            <a class="link" href="./projects.html">View all</a>
+          </div>
+
+          <div class="table">
+            <div class="t-row t-head">
+              <div>Project</div><div>Service</div><div>Status</div><div>Progress</div>
+            </div>
+
+            <div class="t-row">
+              <div>SEO Optimization</div><div>SEO</div>
+              <div><span class="pill pill-good">On Track</span></div>
+              <div><div class="bar"><div class="bar-fill" style="width:78%"></div></div></div>
+            </div>
+            <div class="t-row">
+              <div>Social Media Content</div><div>Social Media</div>
+              <div><span class="pill pill-info">In Progress</span></div>
+              <div><div class="bar"><div class="bar-fill" style="width:65%"></div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Pending Approval</h2>
+            <a class="link" href="./approvals.html">Open approvals</a>
+          </div>
+
+          <div class="stack">
+            <div class="deliverable">
+              <div class="deliverable-title">SEO Report v1</div>
+              <div class="deliverable-meta">Uploaded: 2026-02-26 • Project: SEO Optimization</div>
+              <div class="actions">
+                <button class="btn">Approve</button>
+                <button class="btn btn-outline">Request Changes</button>
+              </div>
+            </div>
+            <div class="note">
+              Approving deliverables helps the team move forward faster.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">© Visionary Verse — Client Dashboard</footer>
+    </main>
+  </div>
+</body>
+</html>

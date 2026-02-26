@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visionary Verse | Projects</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <script defer src="../assets/js/projects.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">VV</div>
+        <div class="brand-text">
+          <div class="brand-name">Visionary Verse</div>
+          <div class="brand-role">User</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-link" href="./dashboard-admin.html">Dashboard</a>
+        <a class="nav-link" href="./clients.html">Clients</a>
+        <a class="nav-link active" href="./projects.html">Projects</a>
+        <a class="nav-link" href="./tasks.html">Tasks</a>
+        <a class="nav-link" href="./approvals.html">Approvals</a>
+        <a class="nav-link" href="./reports.html">Reports</a>
+        <a class="nav-link" href="./dss.html">DSS</a>
+        <a class="nav-link" href="./notifications.html">Notifications</a>
+        <a class="nav-link" href="./chatbot.html">Chatbot</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">Projects</h1>
+          <p class="page-subtitle">Create and track projects per client and service type.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <select class="input" id="serviceFilter">
+            <option value="all">All Services</option>
+            <option value="seo">SEO</option>
+            <option value="ads">Ads</option>
+            <option value="social">Social Media</option>
+            <option value="web">Web Dev</option>
+          </select>
+          <button class="btn" id="openCreateBtn">+ Create Project</button>
+        </div>
+      </header>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Project List</h2>
+          <input class="input" id="searchInput" placeholder="Search projects..." />
+        </div>
+
+        <div class="table">
+          <div class="t-row t-head t-5">
+            <div>Project</div><div>Client</div><div>Service</div><div>Status</div><div>Due</div>
+          </div>
+
+          <div class="t-row t-5 project-row" data-service="seo" data-name="SEO Optimization">
+            <div>SEO Optimization</div>
+            <div>Nova Foods</div>
+            <div><span class="pill pill-info">SEO</span></div>
+            <div><span class="pill pill-good">On Track</span></div>
+            <div>2026-03-02</div>
+          </div>
+
+          <div class="t-row t-5 project-row" data-service="ads" data-name="Ads Campaign">
+            <div>Ads Campaign</div>
+            <div>Skyline Homes</div>
+            <div><span class="pill pill-info">Ads</span></div>
+            <div><span class="pill pill-warn">Review</span></div>
+            <div>2026-03-01</div>
+          </div>
+
+          <div class="t-row t-5 project-row" data-service="social" data-name="Social Media Content">
+            <div>Social Media Content</div>
+            <div>Glow Cosmetics</div>
+            <div><span class="pill pill-info">Social Media</span></div>
+            <div><span class="pill pill-info">In Progress</span></div>
+            <div>2026-03-10</div>
+          </div>
+        </div>
+
+        <p class="muted small">Tip: later you can show different project lists based on role (admin/team/client).</p>
+      </section>
+
+      <!-- Modal -->
+      <section class="modal" id="projectModal" hidden>
+        <div class="modal-card">
+          <div class="modal-head">
+            <h2>Create Project</h2>
+            <button class="icon-btn" id="closeModalBtn" aria-label="Close">✕</button>
+          </div>
+
+          <form id="projectForm" class="form">
+            <div class="form-grid">
+              <label class="label">
+                Project Title
+                <input class="input" id="projectTitle" required />
+              </label>
+
+              <label class="label">
+                Client
+                <select class="input" id="projectClient" required>
+                  <option value="">Select client</option>
+                  <option>Nova Foods</option>
+                  <option>Glow Cosmetics</option>
+                  <option>Skyline Homes</option>
+                </select>
+              </label>
+
+              <label class="label">
+                Service Type
+                <select class="input" id="projectService" required>
+                  <option value="seo">SEO</option>
+                  <option value="ads">Ads</option>
+                  <option value="social">Social Media</option>
+                  <option value="web">Web Dev</option>
+                </select>
+              </label>
+
+              <label class="label">
+                Due Date
+                <input class="input" id="projectDue" type="date" required />
+              </label>
+
+              <label class="label">
+                Status
+                <select class="input" id="projectStatus">
+                  <option>On Track</option>
+                  <option>In Progress</option>
+                  <option>Review</option>
+                  <option>Delayed</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="modal-actions">
+              <button type="button" class="btn btn-outline" id="cancelBtn">Cancel</button>
+              <button type="submit" class="btn">Save</button>
+            </div>
+
+            <p class="muted small">Frontend-only. Later connect to PHP (ProjectController).</p>
+          </form>
+        </div>
+      </section>
+
+      <footer class="footer">© Visionary Verse — Projects</footer>
+    </main>
+  </div>
+</body>
+</html>

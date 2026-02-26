@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visionary Verse | Reports</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <script defer src="../assets/js/reports.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">VV</div>
+        <div class="brand-text">
+          <div class="brand-name">Visionary Verse</div>
+          <div class="brand-role">Reports</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-link" href="./dashboard-admin.html">Dashboard</a>
+        <a class="nav-link" href="./clients.html">Clients</a>
+        <a class="nav-link" href="./projects.html">Projects</a>
+        <a class="nav-link" href="./tasks.html">Tasks</a>
+        <a class="nav-link" href="./approvals.html">Approvals</a>
+        <a class="nav-link active" href="./reports.html">Reports</a>
+        <a class="nav-link" href="./dss.html">DSS</a>
+        <a class="nav-link" href="./notifications.html">Notifications</a>
+        <a class="nav-link" href="./chatbot.html">Chatbot</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">Reporting Dashboard</h1>
+          <p class="page-subtitle">Project progress summary and task completion overview.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <select class="input" id="projectSelect">
+            <option value="all" selected>All Projects</option>
+            <option value="seo">SEO Optimization</option>
+            <option value="ads">Ads Campaign</option>
+            <option value="social">Social Media Content</option>
+          </select>
+          <button class="btn btn-outline" id="exportBtn">Export (UI)</button>
+        </div>
+      </header>
+
+      <section class="grid grid-4">
+        <div class="card stat">
+          <div class="stat-label">Total Projects</div>
+          <div class="stat-value" id="kpiProjects">3</div>
+          <div class="stat-hint">Selected scope</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-label">Total Tasks</div>
+          <div class="stat-value" id="kpiTasks">29</div>
+          <div class="stat-hint">All statuses</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-label">Completed</div>
+          <div class="stat-value" id="kpiDone">18</div>
+          <div class="stat-hint">Done tasks</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-label">Completion Rate</div>
+          <div class="stat-value" id="kpiRate">62%</div>
+          <div class="stat-hint">Overview</div>
+        </div>
+      </section>
+
+      <section class="grid grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h2>Project Progress</h2>
+            <span class="muted">UI preview</span>
+          </div>
+
+          <div class="stack" id="progressList">
+            <div>
+              <div class="kpi">
+                <b>SEO Optimization</b>
+                <span class="tag dot">78%</span>
+              </div>
+              <div class="bar" style="margin-top:8px"><div class="bar-fill" style="width:78%"></div></div>
+            </div>
+
+            <div>
+              <div class="kpi">
+                <b>Ads Campaign</b>
+                <span class="tag dot">54%</span>
+              </div>
+              <div class="bar" style="margin-top:8px"><div class="bar-fill" style="width:54%"></div></div>
+            </div>
+
+            <div>
+              <div class="kpi">
+                <b>Social Media Content</b>
+                <span class="tag dot">65%</span>
+              </div>
+              <div class="bar" style="margin-top:8px"><div class="bar-fill" style="width:65%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Task Completion Overview</h2>
+            <span class="muted">By status</span>
+          </div>
+
+          <div class="stack" id="statusSummary">
+            <div class="alert alert-info"><b>To Do:</b> 6</div>
+            <div class="alert alert-info"><b>In Progress:</b> 5</div>
+            <div class="alert alert-warn"><b>Review:</b> 0</div>
+            <div class="alert alert-info"><b>Done:</b> 18</div>
+          </div>
+
+          <div class="note" style="margin-top:10px">
+            Later: replace these with live counts using MySQL queries.
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">© Visionary Verse — Reports</footer>
+    </main>
+  </div>
+</body>
+</html>

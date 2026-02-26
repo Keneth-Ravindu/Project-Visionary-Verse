@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visionary Verse | Notifications</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <script defer src="../assets/js/notifications.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">VV</div>
+        <div class="brand-text">
+          <div class="brand-name">Visionary Verse</div>
+          <div class="brand-role">Notifications</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-link" href="./dashboard-admin.html">Dashboard</a>
+        <a class="nav-link" href="./clients.html">Clients</a>
+        <a class="nav-link" href="./projects.html">Projects</a>
+        <a class="nav-link" href="./tasks.html">Tasks</a>
+        <a class="nav-link" href="./approvals.html">Approvals</a>
+        <a class="nav-link" href="./reports.html">Reports</a>
+        <a class="nav-link" href="./dss.html">DSS</a>
+        <a class="nav-link active" href="./notifications.html">Notifications</a>
+        <a class="nav-link" href="./chatbot.html">Chatbot</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">Notifications</h1>
+          <p class="page-subtitle">Real-time task status updates (AJAX polling later).</p>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="btn btn-outline" id="markAllBtn">Mark all read (UI)</button>
+          <button class="btn" id="simulateBtn">Simulate new notification</button>
+        </div>
+      </header>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Inbox</h2>
+          <span class="muted" id="unreadCount">Unread: 3</span>
+        </div>
+
+        <div class="table" id="notifList">
+          <div class="t-row t-head t-5">
+            <div>Message</div><div>Type</div><div>Link</div><div>Time</div><div>Status</div>
+          </div>
+
+          <div class="t-row t-5 n-row" data-read="false">
+            <div>Task moved To Do → Review (Ad Copy Draft)</div>
+            <div><span class="pill pill-warn">Task</span></div>
+            <div><a class="link" href="./tasks.html">Open</a></div>
+            <div>Just now</div>
+            <div><span class="pill pill-info">Unread</span></div>
+          </div>
+
+          <div class="t-row t-5 n-row" data-read="false">
+            <div>New deliverable uploaded (SEO Report v1)</div>
+            <div><span class="pill pill-info">Approval</span></div>
+            <div><a class="link" href="./approvals.html">Open</a></div>
+            <div>10 min ago</div>
+            <div><span class="pill pill-info">Unread</span></div>
+          </div>
+
+          <div class="t-row t-5 n-row" data-read="false">
+            <div>DSS flagged project as High Risk (Ads Campaign)</div>
+            <div><span class="pill pill-danger">DSS</span></div>
+            <div><a class="link" href="./dss.html">Open</a></div>
+            <div>1 hour ago</div>
+            <div><span class="pill pill-info">Unread</span></div>
+          </div>
+
+          <div class="t-row t-5 n-row" data-read="true">
+            <div>Task completed (Keyword Research)</div>
+            <div><span class="pill pill-good">Task</span></div>
+            <div><a class="link" href="./tasks.html">Open</a></div>
+            <div>Yesterday</div>
+            <div><span class="pill pill-good">Read</span></div>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:12px">
+          Later: this page will call <b>/api/notifications/poll?since=ID</b> every few seconds.
+        </div>
+      </section>
+
+      <footer class="footer">© Visionary Verse — Notifications</footer>
+    </main>
+  </div>
+</body>
+</html>

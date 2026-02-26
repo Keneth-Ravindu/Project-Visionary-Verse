@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visionary Verse | Admin Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <script defer src="../assets/js/app.js"></script>
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">VV</div>
+        <div class="brand-text">
+          <div class="brand-name">Visionary Verse</div>
+          <div class="brand-role">Admin</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-link active" href="./dashboard-admin.html">Dashboard</a>
+        <a class="nav-link" href="./clients.html">Clients</a>
+        <a class="nav-link" href="./projects.html">Projects</a>
+        <a class="nav-link" href="./tasks.html">Tasks</a>
+        <a class="nav-link" href="./approvals.html">Approvals</a>
+        <a class="nav-link" href="./reports.html">Reports</a>
+        <a class="nav-link" href="./dss.html">DSS</a>
+        <a class="nav-link" href="./notifications.html">Notifications</a>
+        <a class="nav-link" href="./chatbot.html">Chatbot</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">Admin Dashboard</h1>
+          <p class="page-subtitle">Overview of clients, projects, tasks, approvals and risk signals.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="icon-btn" id="notifBtn" aria-label="Notifications">
+            🔔 <span class="badge" id="notifCount">3</span>
+          </button>
+          <div class="profile">
+            <div class="avatar">A</div>
+            <div class="profile-meta">
+              <div class="profile-name">Admin User</div>
+              <div class="profile-email">admin@visionaryverse.com</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Notification dropdown -->
+      <section class="dropdown" id="notifDropdown" hidden>
+        <div class="dropdown-header">Notifications</div>
+        <a class="dropdown-item" href="./tasks.html">Task moved to Review (Project: SEO Sprint)</a>
+        <a class="dropdown-item" href="./approvals.html">Client requested changes (Deliverable v2)</a>
+        <a class="dropdown-item" href="./dss.html">Project marked High Risk (Delay Indicator)</a>
+      </section>
+
+      <!-- Stats -->
+      <section class="grid grid-4">
+        <div class="card stat">
+          <div class="stat-label">Active Clients</div>
+          <div class="stat-value">12</div>
+          <div class="stat-hint">+2 this month</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-label">Ongoing Projects</div>
+          <div class="stat-value">18</div>
+          <div class="stat-hint">3 due this week</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-label">Open Tasks</div>
+          <div class="stat-value">47</div>
+          <div class="stat-hint">11 high priority</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-label">Pending Approvals</div>
+          <div class="stat-value">5</div>
+          <div class="stat-hint">2 waiting on client</div>
+        </div>
+      </section>
+
+      <!-- Two columns -->
+      <section class="grid grid-2">
+        <!-- Recent Projects -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Recent Projects</h2>
+            <a class="link" href="./projects.html">View all</a>
+          </div>
+
+          <div class="table">
+            <div class="t-row t-head">
+              <div>Project</div><div>Client</div><div>Status</div><div>Due</div>
+            </div>
+
+            <div class="t-row">
+              <div>SEO Optimization</div><div>Nova Foods</div>
+              <div><span class="pill pill-info">In Progress</span></div><div>2026-03-02</div>
+            </div>
+            <div class="t-row">
+              <div>Ads Campaign</div><div>Skyline Homes</div>
+              <div><span class="pill pill-warn">Review</span></div><div>2026-03-01</div>
+            </div>
+            <div class="t-row">
+              <div>Social Media Content</div><div>Glow Cosmetics</div>
+              <div><span class="pill pill-good">On Track</span></div><div>2026-03-10</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DSS Alerts -->
+        <div class="card">
+          <div class="card-header">
+            <h2>DSS Alerts</h2>
+            <a class="link" href="./dss.html">Open DSS</a>
+          </div>
+
+          <div class="stack">
+            <div class="alert alert-danger">
+              <div class="alert-title">High Delay Risk</div>
+              <div class="alert-text">Project “Ads Campaign” has 3 overdue tasks and deadline is near.</div>
+            </div>
+            <div class="alert alert-warn">
+              <div class="alert-title">Medium Delay Risk</div>
+              <div class="alert-text">Project “Website Redesign” completion rate below expected.</div>
+            </div>
+            <div class="alert alert-info">
+              <div class="alert-title">Client Priority Insight</div>
+              <div class="alert-text">“Nova Foods” priority score: <b>86/100</b> (Urgent deadline + high value).</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Team workload -->
+      <section class="card">
+        <div class="card-header">
+          <h2>Team Workload</h2>
+          <span class="muted">Dummy UI preview</span>
+        </div>
+
+        <div class="table">
+          <div class="t-row t-head">
+            <div>Team Member</div><div>Assigned Tasks</div><div>High Priority</div><div>Overdue</div>
+          </div>
+          <div class="t-row"><div>Sam</div><div>12</div><div>4</div><div>1</div></div>
+          <div class="t-row"><div>Nisha</div><div>9</div><div>2</div><div>0</div></div>
+          <div class="t-row"><div>Ravi</div><div>14</div><div>5</div><div>2</div></div>
+        </div>
+      </section>
+
+      <footer class="footer">© Visionary Verse — Admin Dashboard</footer>
+    </main>
+  </div>
+</body>
+</html>

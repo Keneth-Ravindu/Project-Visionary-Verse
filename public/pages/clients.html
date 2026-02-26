@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visionary Verse | Clients</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <script defer src="../assets/js/clients.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">VV</div>
+        <div class="brand-text">
+          <div class="brand-name">Visionary Verse</div>
+          <div class="brand-role">Admin</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-link" href="./dashboard-admin.html">Dashboard</a>
+        <a class="nav-link active" href="./clients.html">Clients</a>
+        <a class="nav-link" href="./projects.html">Projects</a>
+        <a class="nav-link" href="./tasks.html">Tasks</a>
+        <a class="nav-link" href="./approvals.html">Approvals</a>
+        <a class="nav-link" href="./reports.html">Reports</a>
+        <a class="nav-link" href="./dss.html">DSS</a>
+        <a class="nav-link" href="./notifications.html">Notifications</a>
+        <a class="nav-link" href="./chatbot.html">Chatbot</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">Clients</h1>
+          <p class="page-subtitle">Manage client profiles and status.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <input class="input" id="searchInput" placeholder="Search clients..." />
+          <button class="btn" id="openCreateBtn">+ Add Client</button>
+        </div>
+      </header>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Client List</h2>
+          <div class="row">
+            <select class="input" id="statusFilter">
+              <option value="all">All</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table">
+          <div class="t-row t-head t-5">
+            <div>Client</div><div>Email</div><div>Company</div><div>Status</div><div>Actions</div>
+          </div>
+
+          <div class="t-row t-5 client-row" data-status="active" data-name="Nova Foods">
+            <div>Nova Foods</div>
+            <div>client@novafoods.com</div>
+            <div>Nova Foods Pvt</div>
+            <div><span class="pill pill-good">Active</span></div>
+            <div class="actions-inline">
+              <button class="btn btn-outline btn-sm editBtn">Edit</button>
+              <button class="btn btn-outline btn-sm toggleBtn">Deactivate</button>
+            </div>
+          </div>
+
+          <div class="t-row t-5 client-row" data-status="active" data-name="Glow Cosmetics">
+            <div>Glow Cosmetics</div>
+            <div>hello@glowcos.com</div>
+            <div>Glow Co</div>
+            <div><span class="pill pill-good">Active</span></div>
+            <div class="actions-inline">
+              <button class="btn btn-outline btn-sm editBtn">Edit</button>
+              <button class="btn btn-outline btn-sm toggleBtn">Deactivate</button>
+            </div>
+          </div>
+
+          <div class="t-row t-5 client-row" data-status="inactive" data-name="OldTown Books">
+            <div>OldTown Books</div>
+            <div>info@oldtownbooks.com</div>
+            <div>OldTown</div>
+            <div><span class="pill pill-warn">Inactive</span></div>
+            <div class="actions-inline">
+              <button class="btn btn-outline btn-sm editBtn">Edit</button>
+              <button class="btn btn-outline btn-sm toggleBtn">Activate</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Modal -->
+      <section class="modal" id="clientModal" hidden>
+        <div class="modal-card">
+          <div class="modal-head">
+            <h2 id="modalTitle">Add Client</h2>
+            <button class="icon-btn" id="closeModalBtn" aria-label="Close">✕</button>
+          </div>
+
+          <form id="clientForm" class="form">
+            <div class="form-grid">
+              <label class="label">
+                Client Name
+                <input class="input" id="clientName" required />
+              </label>
+
+              <label class="label">
+                Company
+                <input class="input" id="clientCompany" required />
+              </label>
+
+              <label class="label">
+                Email
+                <input class="input" id="clientEmail" type="email" required />
+              </label>
+
+              <label class="label">
+                Status
+                <select class="input" id="clientStatus">
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="modal-actions">
+              <button type="button" class="btn btn-outline" id="cancelBtn">Cancel</button>
+              <button type="submit" class="btn" id="saveBtn">Save</button>
+            </div>
+
+            <p class="muted small">Frontend-only for now. Later connect to PHP (ClientController).</p>
+          </form>
+        </div>
+      </section>
+
+      <footer class="footer">© Visionary Verse — Clients</footer>
+    </main>
+  </div>
+</body>
+</html>

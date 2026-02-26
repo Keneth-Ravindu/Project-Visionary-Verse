@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visionary Verse | Tasks</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <script defer src="../assets/js/tasks.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">VV</div>
+        <div class="brand-text">
+          <div class="brand-name">Visionary Verse</div>
+          <div class="brand-role">Team Member</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-link" href="./dashboard-staff.html">Dashboard</a>
+        <a class="nav-link" href="./projects.html">Projects</a>
+        <a class="nav-link active" href="./tasks.html">My Tasks</a>
+        <a class="nav-link" href="./approvals.html">Deliverables</a>
+        <a class="nav-link" href="./notifications.html">Notifications</a>
+        <a class="nav-link" href="./chatbot.html">Chatbot</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">Tasks</h1>
+          <p class="page-subtitle">Update task status to trigger workflow + notifications later.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <select class="input" id="statusFilter">
+            <option value="all">All Status</option>
+            <option value="todo">To Do</option>
+            <option value="progress">In Progress</option>
+            <option value="review">Review</option>
+            <option value="done">Done</option>
+          </select>
+          <button class="btn" id="openCreateBtn">+ Create Task</button>
+        </div>
+      </header>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Task List</h2>
+          <input class="input" id="searchInput" placeholder="Search tasks..." />
+        </div>
+
+        <div class="table">
+          <div class="t-row t-head t-6">
+            <div>Task</div><div>Project</div><div>Priority</div><div>Status</div><div>Due</div><div>Update</div>
+          </div>
+
+          <div class="t-row t-6 task-row" data-status="todo" data-name="Keyword Research">
+            <div>Keyword Research</div>
+            <div>SEO Optimization</div>
+            <div><span class="pill pill-danger">High</span></div>
+            <div><span class="pill pill-info statusPill">To Do</span></div>
+            <div>Today</div>
+            <div>
+              <select class="input input-sm statusSelect">
+                <option value="todo" selected>To Do</option>
+                <option value="progress">In Progress</option>
+                <option value="review">Review</option>
+                <option value="done">Done</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="t-row t-6 task-row" data-status="progress" data-name="Create Post Designs">
+            <div>Create Post Designs</div>
+            <div>Social Media Content</div>
+            <div><span class="pill pill-warn">Medium</span></div>
+            <div><span class="pill pill-good statusPill">In Progress</span></div>
+            <div>Tomorrow</div>
+            <div>
+              <select class="input input-sm statusSelect">
+                <option value="todo">To Do</option>
+                <option value="progress" selected>In Progress</option>
+                <option value="review">Review</option>
+                <option value="done">Done</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="t-row t-6 task-row" data-status="review" data-name="Ad Copy Draft">
+            <div>Ad Copy Draft</div>
+            <div>Ads Campaign</div>
+            <div><span class="pill pill-warn">Medium</span></div>
+            <div><span class="pill pill-warn statusPill">Review</span></div>
+            <div>2026-02-28</div>
+            <div>
+              <select class="input input-sm statusSelect">
+                <option value="todo">To Do</option>
+                <option value="progress">In Progress</option>
+                <option value="review" selected>Review</option>
+                <option value="done">Done</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="note" id="statusNote" style="margin-top:12px;">
+          When you change status later, the system will create a notification (AJAX polling).
+          For now, this page updates UI only.
+        </div>
+      </section>
+
+      <!-- Modal -->
+      <section class="modal" id="taskModal" hidden>
+        <div class="modal-card">
+          <div class="modal-head">
+            <h2>Create Task</h2>
+            <button class="icon-btn" id="closeModalBtn" aria-label="Close">✕</button>
+          </div>
+
+          <form id="taskForm" class="form">
+            <div class="form-grid">
+              <label class="label">
+                Task Title
+                <input class="input" id="taskTitle" required />
+              </label>
+
+              <label class="label">
+                Project
+                <select class="input" id="taskProject" required>
+                  <option value="">Select project</option>
+                  <option>SEO Optimization</option>
+                  <option>Ads Campaign</option>
+                  <option>Social Media Content</option>
+                </select>
+              </label>
+
+              <label class="label">
+                Priority
+                <select class="input" id="taskPriority">
+                  <option>High</option>
+                  <option selected>Medium</option>
+                  <option>Low</option>
+                </select>
+              </label>
+
+              <label class="label">
+                Due Date
+                <input class="input" id="taskDue" type="date" required />
+              </label>
+
+              <label class="label">
+                Status
+                <select class="input" id="taskStatus">
+                  <option value="todo">To Do</option>
+                  <option value="progress">In Progress</option>
+                  <option value="review">Review</option>
+                  <option value="done">Done</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="modal-actions">
+              <button type="button" class="btn btn-outline" id="cancelBtn">Cancel</button>
+              <button type="submit" class="btn">Save</button>
+            </div>
+
+            <p class="muted small">Frontend-only. Later connect to PHP (TaskController).</p>
+          </form>
+        </div>
+      </section>
+
+      <footer class="footer">© Visionary Verse — Tasks</footer>
+    </main>
+  </div>
+</body>
+</html>

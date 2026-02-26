@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visionary Verse | Approvals</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <script defer src="../assets/js/approvals.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">VV</div>
+        <div class="brand-text">
+          <div class="brand-name">Visionary Verse</div>
+          <div class="brand-role">Approvals</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-link" href="./dashboard-admin.html">Dashboard</a>
+        <a class="nav-link" href="./clients.html">Clients</a>
+        <a class="nav-link" href="./projects.html">Projects</a>
+        <a class="nav-link" href="./tasks.html">Tasks</a>
+        <a class="nav-link active" href="./approvals.html">Approvals</a>
+        <a class="nav-link" href="./reports.html">Reports</a>
+        <a class="nav-link" href="./dss.html">DSS</a>
+        <a class="nav-link" href="./notifications.html">Notifications</a>
+        <a class="nav-link" href="./chatbot.html">Chatbot</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">Client Approval Module</h1>
+          <p class="page-subtitle">Upload deliverables and let clients approve or request changes.</p>
+        </div>
+
+        <div class="topbar-actions">
+          <select class="input" id="roleView">
+            <option value="team" selected>Team View (Upload)</option>
+            <option value="client">Client View (Approve)</option>
+          </select>
+          <button class="btn" id="openUploadBtn">+ Upload Deliverable</button>
+        </div>
+      </header>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Deliverables</h2>
+          <div class="row">
+            <select class="input" id="statusFilter">
+              <option value="all">All</option>
+              <option value="pending" selected>Pending</option>
+              <option value="approved">Approved</option>
+              <option value="changes">Changes Requested</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table">
+          <div class="t-row t-head t-6">
+            <div>Deliverable</div><div>Project</div><div>Version</div><div>Status</div><div>Uploaded</div><div>Action</div>
+          </div>
+
+          <div class="t-row t-6 d-row" data-status="pending">
+            <div>SEO Report</div>
+            <div>SEO Optimization</div>
+            <div>v1</div>
+            <div><span class="pill pill-warn statusPill">Pending</span></div>
+            <div>2026-02-26</div>
+            <div class="actions-inline">
+              <button class="btn btn-outline btn-sm viewBtn">View</button>
+              <button class="btn btn-sm approveBtn">Approve</button>
+              <button class="btn btn-outline btn-sm changesBtn">Request Changes</button>
+            </div>
+          </div>
+
+          <div class="t-row t-6 d-row" data-status="approved">
+            <div>Ad Creative</div>
+            <div>Ads Campaign</div>
+            <div>v2</div>
+            <div><span class="pill pill-good statusPill">Approved</span></div>
+            <div>2026-02-20</div>
+            <div class="actions-inline">
+              <button class="btn btn-outline btn-sm viewBtn">View</button>
+              <button class="btn btn-outline btn-sm">Download</button>
+            </div>
+          </div>
+
+          <div class="t-row t-6 d-row" data-status="changes">
+            <div>Post Designs</div>
+            <div>Social Media Content</div>
+            <div>v3</div>
+            <div><span class="pill pill-danger statusPill">Changes</span></div>
+            <div>2026-02-18</div>
+            <div class="actions-inline">
+              <button class="btn btn-outline btn-sm viewBtn">View</button>
+              <button class="btn btn-outline btn-sm">Read Feedback</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="note" id="approvalNote" style="margin-top:12px">
+          UI only. Later: approve/request changes will call PHP endpoints and trigger notifications.
+        </div>
+      </section>
+
+      <!-- Upload modal -->
+      <section class="modal" id="uploadModal" hidden>
+        <div class="modal-card">
+          <div class="modal-head">
+            <h2>Upload Deliverable</h2>
+            <button class="icon-btn" id="closeUploadModal" aria-label="Close">✕</button>
+          </div>
+
+          <form id="uploadForm" class="form">
+            <div class="form-grid">
+              <label class="label">
+                Project
+                <select class="input" id="upProject" required>
+                  <option value="">Select project</option>
+                  <option>SEO Optimization</option>
+                  <option>Ads Campaign</option>
+                  <option>Social Media Content</option>
+                </select>
+              </label>
+
+              <label class="label">
+                Version
+                <input class="input" id="upVersion" placeholder="v1" required />
+              </label>
+
+              <label class="label">
+                File (UI only)
+                <input class="input" id="upFile" type="file" />
+              </label>
+
+              <label class="label">
+                Notes
+                <input class="input" id="upNotes" placeholder="Short description..." />
+              </label>
+            </div>
+
+            <div class="modal-actions">
+              <button type="button" class="btn btn-outline" id="cancelUpload">Cancel</button>
+              <button type="submit" class="btn">Upload</button>
+            </div>
+
+            <p class="muted small">Later: file upload → PHP UploadService + MySQL deliverables table.</p>
+          </form>
+        </div>
+      </section>
+
+      <!-- Feedback modal -->
+      <section class="modal" id="feedbackModal" hidden>
+        <div class="modal-card">
+          <div class="modal-head">
+            <h2>Request Changes</h2>
+            <button class="icon-btn" id="closeFeedbackModal" aria-label="Close">✕</button>
+          </div>
+
+          <form id="feedbackForm" class="form">
+            <label class="label">
+              Feedback
+              <textarea class="input" id="feedbackText" rows="5" placeholder="Describe what to change..." required></textarea>
+            </label>
+
+            <div class="modal-actions">
+              <button type="button" class="btn btn-outline" id="cancelFeedback">Cancel</button>
+              <button type="submit" class="btn">Send</button>
+            </div>
+
+            <p class="muted small">Later: store feedback in approvals table and notify team.</p>
+          </form>
+        </div>
+      </section>
+
+      <footer class="footer">© Visionary Verse — Approvals</footer>
+    </main>
+  </div>
+</body>
+</html>

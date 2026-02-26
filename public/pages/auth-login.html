@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visionary Verse | Login</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <script defer src="../assets/js/auth.js"></script>
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div class="brand-logo" style="width:52px;height:52px;border-radius:18px">VV</div>
+        <div>
+          <div class="auth-title">Visionary Verse</div>
+          <div class="auth-meta">Digital Marketing Agency Management System</div>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <form id="loginForm" class="form">
+        <label class="label">
+          Email
+          <input class="input" id="email" type="email" placeholder="you@example.com" required />
+        </label>
+
+        <label class="label" style="margin-top:10px">
+          Password
+          <input class="input" id="password" type="password" placeholder="••••••••" required />
+        </label>
+
+        <label class="label" style="margin-top:10px">
+          Role (UI demo)
+          <select class="input" id="role">
+            <option value="admin">Admin</option>
+            <option value="staff">Team Member</option>
+            <option value="client">Client</option>
+          </select>
+        </label>
+
+        <div style="display:flex;gap:10px;margin-top:14px">
+          <button class="btn" type="submit" style="flex:1">Login</button>
+          <button class="btn btn-outline" type="button" id="fillDemo">Fill Demo</button>
+        </div>
+
+        <p class="muted small" style="margin-top:10px">
+          Frontend-only. Later: connect to PHP AuthController + sessions.
+        </p>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

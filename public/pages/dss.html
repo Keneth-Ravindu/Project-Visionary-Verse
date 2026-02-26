@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visionary Verse | DSS</title>
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <script defer src="../assets/js/dss.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">VV</div>
+        <div class="brand-text">
+          <div class="brand-name">Visionary Verse</div>
+          <div class="brand-role">DSS</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-link" href="./dashboard-admin.html">Dashboard</a>
+        <a class="nav-link" href="./clients.html">Clients</a>
+        <a class="nav-link" href="./projects.html">Projects</a>
+        <a class="nav-link" href="./tasks.html">Tasks</a>
+        <a class="nav-link" href="./approvals.html">Approvals</a>
+        <a class="nav-link" href="./reports.html">Reports</a>
+        <a class="nav-link active" href="./dss.html">DSS</a>
+        <a class="nav-link" href="./notifications.html">Notifications</a>
+        <a class="nav-link" href="./chatbot.html">Chatbot</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">Decision Support System</h1>
+          <p class="page-subtitle">Project delay risk indicator + client priority score (UI preview).</p>
+        </div>
+
+        <div class="topbar-actions">
+          <select class="input" id="projectPick">
+            <option value="ads" selected>Ads Campaign</option>
+            <option value="seo">SEO Optimization</option>
+            <option value="social">Social Media Content</option>
+          </select>
+          <select class="input" id="clientPick">
+            <option value="nova" selected>Nova Foods</option>
+            <option value="glow">Glow Cosmetics</option>
+            <option value="sky">Skyline Homes</option>
+          </select>
+          <button class="btn btn-outline" id="recalcBtn">Recalculate (UI)</button>
+        </div>
+      </header>
+
+      <section class="grid grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h2>Project Delay Risk Indicator</h2>
+            <span class="muted">Based on overdue tasks + time left</span>
+          </div>
+
+          <div class="stack">
+            <div class="alert" id="riskBox">
+              <div class="alert-title" id="riskTitle">High Risk</div>
+              <div class="alert-text" id="riskReason">3 overdue tasks and deadline is near.</div>
+            </div>
+
+            <div class="table">
+              <div class="t-row t-head">
+                <div>Metric</div><div>Value</div><div></div><div></div>
+              </div>
+              <div class="t-row"><div>Total Tasks</div><div id="mTotal">9</div><div></div><div></div></div>
+              <div class="t-row"><div>Done Tasks</div><div id="mDone">4</div><div></div><div></div></div>
+              <div class="t-row"><div>Overdue Tasks</div><div id="mOverdue">3</div><div></div><div></div></div>
+              <div class="t-row"><div>Days Left</div><div id="mDays">3</div><div></div><div></div></div>
+            </div>
+
+            <div class="note">
+              Later: calculate using MySQL task dates + status, then store/display from PHP.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Client Priority Score</h2>
+            <span class="muted">0–100 weighted score</span>
+          </div>
+
+          <div class="stack">
+            <div class="alert alert-info">
+              <div class="alert-title">Priority Score</div>
+              <div class="alert-text"><span class="big" id="priorityScore" style="font-weight:900;font-size:2rem">86</span> / 100</div>
+            </div>
+
+            <div class="table">
+              <div class="t-row t-head">
+                <div>Factor</div><div>Weight</div><div>Value</div><div>Points</div>
+              </div>
+              <div class="t-row"><div>Budget Level</div><div>40%</div><div id="fBudget">High</div><div id="pBudget">36</div></div>
+              <div class="t-row"><div>Deadline Urgency</div><div>30%</div><div id="fUrgency">High</div><div id="pUrgency">27</div></div>
+              <div class="t-row"><div>Client Tier</div><div>20%</div><div id="fTier">VIP</div><div id="pTier">18</div></div>
+              <div class="t-row"><div>Complexity</div><div>10%</div><div id="fComplex">Medium</div><div id="pComplex">5</div></div>
+            </div>
+
+            <div class="note">
+              Later: weights + values can be stored in DB for transparency.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">© Visionary Verse — DSS</footer>
+    </main>
+  </div>
+</body>
+</html>
