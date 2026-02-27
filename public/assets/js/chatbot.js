@@ -2,17 +2,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatBox = document.getElementById("chatBox");
   const chatInput = document.getElementById("chatInput");
   const sendBtn = document.getElementById("sendBtn");
-  const clearChat = document.getElementById("clearChat");
+  const quickHelp = document.getElementById("quickHelp");
 
-  const replies = [
-    { k: ["approve", "deliverable"], r: "Go to Approvals → open the deliverable → click Approve or Request Changes." },
-    { k: ["task", "status"], r: "Open Tasks → change the status dropdown (To Do / In Progress / Review / Done)." },
-    { k: ["report", "progress"], r: "Open Reports → select a project → see progress bars and completion KPIs." },
-    { k: ["risk", "delay"], r: "Open DSS → Project Delay Risk shows Low/Medium/High based on overdue tasks & days left." },
-    { k: ["client", "priority"], r: "Client Priority Score (0–100) helps decide which client to focus on first." },
+  const kb = [
+    { keys: ["login","roles","auth"], ans: "You can login as Admin, Team Member, or Client. Backend will control access by role." },
+    { keys: ["client","clients"], ans: "Clients module lets you add/edit clients and set status active/inactive." },
+    { keys: ["project","projects","service"], ans: "Projects are created per client with service type (SEO, Ads, Social Media, Web Dev) and status tracking." },
+    { keys: ["task","tasks","deadline","priority"], ans: "Tasks are created under projects, assigned to team members, with deadlines and priorities." },
+    { keys: ["approval","approvals","deliverable"], ans: "Deliverables can be uploaded and clients can approve or request changes." },
+    { keys: ["report","reports","dashboard"], ans: "Reports show project progress summary and task completion overview." },
+    { keys: ["dss","risk","priority score"], ans: "DSS highlights delay risk indicators and client priority scores for decision support." },
+    { keys: ["notification","notifications","realtime","ajax"], ans: "Real-time status notifications can be done using AJAX polling that checks for updates periodically." },
   ];
 
-  function addMsg(text, who){
+  function addMsg(text, who="me"){
     const div = document.createElement("div");
     div.className = `msg ${who}`;
     div.textContent = text;
@@ -22,8 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function botReply(userText){
     const t = userText.toLowerCase();
-    const found = replies.find(x => x.k.every(word => t.includes(word)));
-    return found ? found.r : "I can help with tasks, approvals, reports, DSS (risk/priority). Try asking in those words.";
+    const hit = kb.find(item => item.keys.some(k => t.includes(k)));
+    return hit ? hit.ans : "I can help with clients, projects, tasks, approvals, reports, DSS, or notifications. Try asking: “How do approvals work?”";
   }
 
   function send(){
@@ -31,17 +34,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if(!text) return;
     addMsg(text, "me");
     chatInput.value = "";
-
-    // UI-only response (later: call PHP endpoint)
     setTimeout(() => addMsg(botReply(text), "bot"), 250);
   }
 
   sendBtn?.addEventListener("click", send);
   chatInput?.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") send();
+    if(e.key === "Enter") send();
   });
 
-  clearChat?.addEventListener("click", () => {
-    chatBox.innerHTML = `<div class="msg bot">Hi! I’m the Visionary Verse assistant. Try: “How do I approve a deliverable?” or “Show my tasks”.</div>`;
+  quickHelp?.addEventListener("click", () => {
+    addMsg("Try: Clients, Projects, Tasks, Approvals, Reports, DSS, Notifications.", "bot");
+    showToast("Tip", "Ask about any module to see a response.");
   });
 });

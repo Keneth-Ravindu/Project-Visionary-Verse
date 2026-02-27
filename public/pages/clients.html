@@ -3,149 +3,155 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Visionary Verse | Clients</title>
-  <link rel="stylesheet" href="../assets/css/main.css" />
+  <title>Clients</title>
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <link rel="icon" type="image/png" href="../assets/img/logo.png" />
+  <script defer src="../assets/js/app.js"></script>
   <script defer src="../assets/js/clients.js"></script>
 </head>
 <body>
-  <div class="app">
-    <aside class="sidebar">
+  <div class="topnav">
+    <div class="topbar">
       <div class="brand">
-        <div class="brand-logo">VV</div>
+        <button class="iconbtn" id="openDrawer">☰</button>
+        <img class="brand-logo-img" src="../assets/img/logo.png" alt="Visionary Verse logo" />
         <div class="brand-text">
           <div class="brand-name">Visionary Verse</div>
-          <div class="brand-role">Admin</div>
+          <div class="brand-sub">Admin • Client Management</div>
         </div>
       </div>
 
-      <nav class="nav">
-        <a class="nav-link" href="./dashboard-admin.html">Dashboard</a>
-        <a class="nav-link active" href="./clients.html">Clients</a>
-        <a class="nav-link" href="./projects.html">Projects</a>
-        <a class="nav-link" href="./tasks.html">Tasks</a>
-        <a class="nav-link" href="./approvals.html">Approvals</a>
-        <a class="nav-link" href="./reports.html">Reports</a>
-        <a class="nav-link" href="./dss.html">DSS</a>
-        <a class="nav-link" href="./notifications.html">Notifications</a>
-        <a class="nav-link" href="./chatbot.html">Chatbot</a>
-      </nav>
-
-      <div class="sidebar-footer">
-        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      <div class="right">
+        <span class="role-pill">Admin</span>
+        <div class="dropdown">
+          <button class="iconbtn" id="notifBtn">🔔 <span class="badge">3</span></button>
+          <div class="menu" id="notifMenu">
+            <div class="item"><b>Client requested changes</b><small>SEO Report v1</small></div>
+            <div class="item"><b>Task moved to Review</b><small>Ads Campaign</small></div>
+            <div class="item"><b>High delay risk</b><small>Website Redesign</small></div>
+          </div>
+        </div>
+        <button class="btn btn-outline" onclick="location.href='./auth-login.html'">Logout</button>
       </div>
-    </aside>
+    </div>
 
-    <main class="main">
-      <header class="topbar">
-        <div>
-          <h1 class="page-title">Clients</h1>
-          <p class="page-subtitle">Manage client profiles and status.</p>
-        </div>
-
-        <div class="topbar-actions">
-          <input class="input" id="searchInput" placeholder="Search clients..." />
-          <button class="btn" id="openCreateBtn">+ Add Client</button>
-        </div>
-      </header>
-
-      <section class="card">
-        <div class="card-header">
-          <h2>Client List</h2>
-          <div class="row">
-            <select class="input" id="statusFilter">
-              <option value="all">All</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="table">
-          <div class="t-row t-head t-5">
-            <div>Client</div><div>Email</div><div>Company</div><div>Status</div><div>Actions</div>
-          </div>
-
-          <div class="t-row t-5 client-row" data-status="active" data-name="Nova Foods">
-            <div>Nova Foods</div>
-            <div>client@novafoods.com</div>
-            <div>Nova Foods Pvt</div>
-            <div><span class="pill pill-good">Active</span></div>
-            <div class="actions-inline">
-              <button class="btn btn-outline btn-sm editBtn">Edit</button>
-              <button class="btn btn-outline btn-sm toggleBtn">Deactivate</button>
-            </div>
-          </div>
-
-          <div class="t-row t-5 client-row" data-status="active" data-name="Glow Cosmetics">
-            <div>Glow Cosmetics</div>
-            <div>hello@glowcos.com</div>
-            <div>Glow Co</div>
-            <div><span class="pill pill-good">Active</span></div>
-            <div class="actions-inline">
-              <button class="btn btn-outline btn-sm editBtn">Edit</button>
-              <button class="btn btn-outline btn-sm toggleBtn">Deactivate</button>
-            </div>
-          </div>
-
-          <div class="t-row t-5 client-row" data-status="inactive" data-name="OldTown Books">
-            <div>OldTown Books</div>
-            <div>info@oldtownbooks.com</div>
-            <div>OldTown</div>
-            <div><span class="pill pill-warn">Inactive</span></div>
-            <div class="actions-inline">
-              <button class="btn btn-outline btn-sm editBtn">Edit</button>
-              <button class="btn btn-outline btn-sm toggleBtn">Activate</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Modal -->
-      <section class="modal" id="clientModal" hidden>
-        <div class="modal-card">
-          <div class="modal-head">
-            <h2 id="modalTitle">Add Client</h2>
-            <button class="icon-btn" id="closeModalBtn" aria-label="Close">✕</button>
-          </div>
-
-          <form id="clientForm" class="form">
-            <div class="form-grid">
-              <label class="label">
-                Client Name
-                <input class="input" id="clientName" required />
-              </label>
-
-              <label class="label">
-                Company
-                <input class="input" id="clientCompany" required />
-              </label>
-
-              <label class="label">
-                Email
-                <input class="input" id="clientEmail" type="email" required />
-              </label>
-
-              <label class="label">
-                Status
-                <select class="input" id="clientStatus">
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </label>
-            </div>
-
-            <div class="modal-actions">
-              <button type="button" class="btn btn-outline" id="cancelBtn">Cancel</button>
-              <button type="submit" class="btn" id="saveBtn">Save</button>
-            </div>
-
-            <p class="muted small">Frontend-only for now. Later connect to PHP (ClientController).</p>
-          </form>
-        </div>
-      </section>
-
-      <footer class="footer">© Visionary Verse — Clients</footer>
-    </main>
+    <div class="tabs">
+      <a class="tab" href="./dashboard-admin.html">Dashboard</a>
+      <a class="tab active" href="./clients.html">Clients</a>
+      <a class="tab" href="./projects.html">Projects</a>
+      <a class="tab" href="./tasks.html">Tasks</a>
+      <a class="tab" href="./approvals.html">Approvals</a>
+      <a class="tab" href="./reports.html">Reports</a>
+      <a class="tab" href="./dss.html">DSS</a>
+      <a class="tab" href="./notifications.html">Notifications</a>
+      <a class="tab" href="./chatbot.html">Chatbot</a>
+    </div>
   </div>
+
+  <div class="drawer" id="drawer">
+    <div class="drawer-panel">
+      <div class="input-row" style="justify-content:space-between">
+        <div class="brand">
+          <img class="brand-logo-img" src="../assets/img/logo.png" alt="Visionary Verse logo" />
+          <div><div class="brand-name">Visionary Verse</div><div class="brand-sub">Admin</div></div>
+        </div>
+        <button class="iconbtn" id="closeDrawer">✕</button>
+      </div>
+      <a class="tab" href="./dashboard-admin.html">Dashboard</a>
+      <a class="tab active" href="./clients.html">Clients</a>
+      <a class="tab" href="./projects.html">Projects</a>
+      <a class="tab" href="./tasks.html">Tasks</a>
+      <a class="tab" href="./approvals.html">Approvals</a>
+      <a class="tab" href="./reports.html">Reports</a>
+      <a class="tab" href="./dss.html">DSS</a>
+      <a class="tab" href="./notifications.html">Notifications</a>
+      <a class="tab" href="./chatbot.html">Chatbot</a>
+    </div>
+  </div>
+
+  <div class="wrap page">
+    <div class="input-row" style="justify-content:space-between; flex-wrap:wrap">
+      <div>
+        <h1 class="h1">Clients</h1>
+        <p class="sub">Create, edit, and manage client status.</p>
+      </div>
+      <div class="input-row" style="flex-wrap:wrap">
+        <input class="input" id="clientSearch" placeholder="Search clients..." style="width:260px" />
+        <select class="input" id="clientStatus" style="width:180px">
+          <option value="all">All</option>
+          <option value="active" selected>Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+        <button class="btn" data-open="clientModal">+ Add Client</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <table class="table" id="clientsTable">
+        <thead>
+          <tr><th>Client</th><th>Email</th><th>Company</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr data-name="Nova Foods" data-status="active">
+            <td>Nova Foods</td><td>client@novafoods.com</td><td>Nova Foods Pvt</td>
+            <td><span class="chip good"><span class="dot"></span>Active</span></td>
+            <td class="actions">
+              <button class="btn btn-outline btnEdit">Edit</button>
+              <button class="btn btn-ghost btnToggle">Deactivate</button>
+            </td>
+          </tr>
+          <tr data-name="Glow Cosmetics" data-status="active">
+            <td>Glow Cosmetics</td><td>hello@glowcos.com</td><td>Glow Co</td>
+            <td><span class="chip good"><span class="dot"></span>Active</span></td>
+            <td class="actions">
+              <button class="btn btn-outline btnEdit">Edit</button>
+              <button class="btn btn-ghost btnToggle">Deactivate</button>
+            </td>
+          </tr>
+          <tr data-name="OldTown Books" data-status="inactive">
+            <td>OldTown Books</td><td>info@oldtownbooks.com</td><td>OldTown</td>
+            <td><span class="chip warn"><span class="dot"></span>Inactive</span></td>
+            <td class="actions">
+              <button class="btn btn-outline btnEdit">Edit</button>
+              <button class="btn btn-ghost btnToggle">Activate</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">© Visionary Verse — Clients</div>
+  </div>
+
+  <div class="modal" id="clientModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <div style="font-weight:950">Client Details</div>
+          <div class="sub">Add or edit a client (UI only)</div>
+        </div>
+        <button class="iconbtn" data-close="clientModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="clientForm">
+          <div class="form-grid">
+            <div><label style="font-weight:950">Client Name</label><input class="input" id="mClientName" required /></div>
+            <div><label style="font-weight:950">Company</label><input class="input" id="mClientCompany" required /></div>
+            <div><label style="font-weight:950">Email</label><input class="input" id="mClientEmail" type="email" required /></div>
+            <div><label style="font-weight:950">Status</label>
+              <select class="input" id="mClientStatus"><option value="active">Active</option><option value="inactive">Inactive</option></select>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-outline" type="button" data-close="clientModal">Cancel</button>
+            <button class="btn" type="submit">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><strong></strong><p></p></div>
 </body>
 </html>

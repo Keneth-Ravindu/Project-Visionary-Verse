@@ -3,102 +3,130 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Visionary Verse | Notifications</title>
-  <link rel="stylesheet" href="../assets/css/main.css" />
+  <title>Notifications</title>
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <link rel="icon" type="image/png" href="../assets/img/logo.png" />
+  <script defer src="../assets/js/app.js"></script>
   <script defer src="../assets/js/notifications.js"></script>
 </head>
 <body>
-  <div class="app">
-    <aside class="sidebar">
+  <div class="topnav">
+    <div class="topbar">
       <div class="brand">
-        <div class="brand-logo">VV</div>
+        <button class="iconbtn" id="openDrawer">☰</button>
+        <img class="brand-logo-img" src="../assets/img/logo.png" alt="Visionary Verse logo" />
         <div class="brand-text">
           <div class="brand-name">Visionary Verse</div>
-          <div class="brand-role">Notifications</div>
+          <div class="brand-sub">Notifications</div>
         </div>
       </div>
 
-      <nav class="nav">
-        <a class="nav-link" href="./dashboard-admin.html">Dashboard</a>
-        <a class="nav-link" href="./clients.html">Clients</a>
-        <a class="nav-link" href="./projects.html">Projects</a>
-        <a class="nav-link" href="./tasks.html">Tasks</a>
-        <a class="nav-link" href="./approvals.html">Approvals</a>
-        <a class="nav-link" href="./reports.html">Reports</a>
-        <a class="nav-link" href="./dss.html">DSS</a>
-        <a class="nav-link active" href="./notifications.html">Notifications</a>
-        <a class="nav-link" href="./chatbot.html">Chatbot</a>
-      </nav>
-
-      <div class="sidebar-footer">
-        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      <div class="right">
+        <span class="role-pill">All Roles</span>
+        <div class="dropdown">
+          <button class="iconbtn" id="notifBtn">🔔 <span class="badge" id="notifBadge">4</span></button>
+          <div class="menu" id="notifMenu">
+            <div class="item"><b>Task moved to Review</b><small>Keyword Research</small></div>
+            <div class="item"><b>Deliverable uploaded</b><small>SEO Report v1</small></div>
+            <div class="item"><b>DSS alert</b><small>High Delay Risk</small></div>
+            <div class="item"><b>Client responded</b><small>Changes requested</small></div>
+          </div>
+        </div>
+        <button class="btn btn-outline" onclick="location.href='./auth-login.html'">Logout</button>
       </div>
-    </aside>
+    </div>
 
-    <main class="main">
-      <header class="topbar">
-        <div>
-          <h1 class="page-title">Notifications</h1>
-          <p class="page-subtitle">Real-time task status updates (AJAX polling later).</p>
-        </div>
-
-        <div class="topbar-actions">
-          <button class="btn btn-outline" id="markAllBtn">Mark all read (UI)</button>
-          <button class="btn" id="simulateBtn">Simulate new notification</button>
-        </div>
-      </header>
-
-      <section class="card">
-        <div class="card-header">
-          <h2>Inbox</h2>
-          <span class="muted" id="unreadCount">Unread: 3</span>
-        </div>
-
-        <div class="table" id="notifList">
-          <div class="t-row t-head t-5">
-            <div>Message</div><div>Type</div><div>Link</div><div>Time</div><div>Status</div>
-          </div>
-
-          <div class="t-row t-5 n-row" data-read="false">
-            <div>Task moved To Do → Review (Ad Copy Draft)</div>
-            <div><span class="pill pill-warn">Task</span></div>
-            <div><a class="link" href="./tasks.html">Open</a></div>
-            <div>Just now</div>
-            <div><span class="pill pill-info">Unread</span></div>
-          </div>
-
-          <div class="t-row t-5 n-row" data-read="false">
-            <div>New deliverable uploaded (SEO Report v1)</div>
-            <div><span class="pill pill-info">Approval</span></div>
-            <div><a class="link" href="./approvals.html">Open</a></div>
-            <div>10 min ago</div>
-            <div><span class="pill pill-info">Unread</span></div>
-          </div>
-
-          <div class="t-row t-5 n-row" data-read="false">
-            <div>DSS flagged project as High Risk (Ads Campaign)</div>
-            <div><span class="pill pill-danger">DSS</span></div>
-            <div><a class="link" href="./dss.html">Open</a></div>
-            <div>1 hour ago</div>
-            <div><span class="pill pill-info">Unread</span></div>
-          </div>
-
-          <div class="t-row t-5 n-row" data-read="true">
-            <div>Task completed (Keyword Research)</div>
-            <div><span class="pill pill-good">Task</span></div>
-            <div><a class="link" href="./tasks.html">Open</a></div>
-            <div>Yesterday</div>
-            <div><span class="pill pill-good">Read</span></div>
-          </div>
-        </div>
-
-        <div class="note" style="margin-top:12px">
-          Later: this page will call <b>/api/notifications/poll?since=ID</b> every few seconds.
-        </div>
-      </section>
-
-      <footer class="footer">© Visionary Verse — Notifications</footer>
-    </main>
+    <div class="tabs">
+      <a class="tab" href="./dashboard-admin.html">Dashboard</a>
+      <a class="tab" href="./clients.html">Clients</a>
+      <a class="tab" href="./projects.html">Projects</a>
+      <a class="tab" href="./tasks.html">Tasks</a>
+      <a class="tab" href="./approvals.html">Approvals</a>
+      <a class="tab" href="./reports.html">Reports</a>
+      <a class="tab" href="./dss.html">DSS</a>
+      <a class="tab active" href="./notifications.html">Notifications</a>
+      <a class="tab" href="./chatbot.html">Chatbot</a>
+    </div>
   </div>
+
+  <div class="drawer" id="drawer">
+    <div class="drawer-panel">
+      <div class="input-row" style="justify-content:space-between">
+        <div class="brand">
+          <img class="brand-logo-img" src="../assets/img/logo.png" alt="Visionary Verse logo" />
+          <div><div class="brand-name">Visionary Verse</div><div class="brand-sub">Menu</div></div>
+        </div>
+        <button class="iconbtn" id="closeDrawer">✕</button>
+      </div>
+
+      <a class="tab" href="./dashboard-admin.html">Dashboard</a>
+      <a class="tab" href="./clients.html">Clients</a>
+      <a class="tab" href="./projects.html">Projects</a>
+      <a class="tab" href="./tasks.html">Tasks</a>
+      <a class="tab" href="./approvals.html">Approvals</a>
+      <a class="tab" href="./reports.html">Reports</a>
+      <a class="tab" href="./dss.html">DSS</a>
+      <a class="tab active" href="./notifications.html">Notifications</a>
+      <a class="tab" href="./chatbot.html">Chatbot</a>
+    </div>
+  </div>
+
+  <div class="wrap page">
+    <div class="input-row" style="justify-content:space-between; flex-wrap:wrap">
+      <div>
+        <h1 class="h1">Notifications</h1>
+        <p class="sub">Real-time workflow notifications (UI demo).</p>
+      </div>
+
+      <div class="input-row" style="flex-wrap:wrap">
+        <select class="input" id="notifFilter" style="width:220px">
+          <option value="all">All Types</option>
+          <option value="task">Task</option>
+          <option value="deliverable">Deliverable</option>
+          <option value="dss">DSS</option>
+        </select>
+        <button class="btn btn-outline" id="markAll">Mark All Read</button>
+        <button class="btn" id="simulate">Simulate New</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <table class="table" id="notifTable">
+        <thead><tr><th>Type</th><th>Message</th><th>Time</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr data-type="task" data-read="no">
+            <td><span class="chip info"><span class="dot"></span>Task</span></td>
+            <td>Task “Keyword Research” moved To Do → Review</td>
+            <td>Just now</td>
+            <td><span class="chip warn"><span class="dot"></span>Unread</span></td>
+            <td class="actions"><button class="btn btn-outline btnRead">Mark Read</button></td>
+          </tr>
+          <tr data-type="deliverable" data-read="no">
+            <td><span class="chip warn"><span class="dot"></span>Deliverable</span></td>
+            <td>Deliverable “SEO Report v1” uploaded</td>
+            <td>5 min ago</td>
+            <td><span class="chip warn"><span class="dot"></span>Unread</span></td>
+            <td class="actions"><button class="btn btn-outline btnRead">Mark Read</button></td>
+          </tr>
+          <tr data-type="dss" data-read="yes">
+            <td><span class="chip danger"><span class="dot"></span>DSS</span></td>
+            <td>DSS flagged “Ads Campaign” as High Delay Risk</td>
+            <td>1 hour ago</td>
+            <td><span class="chip good"><span class="dot"></span>Read</span></td>
+            <td class="actions"><button class="btn btn-outline btnRead">Mark Read</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout info" style="margin-top:14px">
+      <strong>AJAX Polling idea</strong>
+      <p>Client/staff pages can poll `/notifications/unread` every few seconds and update badge + table.</p>
+    </div>
+
+    <div class="footer">© Visionary Verse — Notifications</div>
+  </div>
+
+  <div class="toast" id="toast"><strong></strong><p></p></div>
 </body>
 </html>

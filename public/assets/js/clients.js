@@ -1,87 +1,65 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const openCreateBtn = document.getElementById("openCreateBtn");
-  const closeModalBtn = document.getElementById("closeModalBtn");
-  const cancelBtn = document.getElementById("cancelBtn");
-  const modal = document.getElementById("clientModal");
+  const search = document.getElementById("clientSearch");
+  const filter = document.getElementById("clientStatus");
+  const table = document.getElementById("clientsTable");
   const form = document.getElementById("clientForm");
-  const modalTitle = document.getElementById("modalTitle");
 
-  const searchInput = document.getElementById("searchInput");
-  const statusFilter = document.getElementById("statusFilter");
+  const mName = document.getElementById("mClientName");
+  const mEmail = document.getElementById("mClientEmail");
+  const mCompany = document.getElementById("mClientCompany");
+  const mStatus = document.getElementById("mClientStatus");
 
-  let editMode = false;
+  let editingRow = null;
 
-  function openModal(title) {
-    modalTitle.textContent = title;
-    modal.hidden = false;
-  }
-  function closeModal() {
-    modal.hidden = true;
-    form.reset();
-    editMode = false;
-  }
+  function applyFilters(){
+    const q = (search.value || "").toLowerCase().trim();
+    const st = filter.value;
 
-  function applyFilters() {
-    const q = (searchInput.value || "").toLowerCase().trim();
-    const status = statusFilter.value;
-
-    document.querySelectorAll(".client-row").forEach(row => {
-      const name = (row.dataset.name || "").toLowerCase();
-      const rowStatus = row.dataset.status;
-
-      const matchText = !q || name.includes(q);
-      const matchStatus = status === "all" || rowStatus === status;
-
-      row.style.display = (matchText && matchStatus) ? "" : "none";
+    table.querySelectorAll("tbody tr").forEach(tr => {
+      const name = (tr.dataset.name || "").toLowerCase();
+      const status = tr.dataset.status;
+      const okText = !q || name.includes(q);
+      const okStatus = (st === "all") || (status === st);
+      tr.style.display = (okText && okStatus) ? "" : "none";
     });
   }
 
-  openCreateBtn?.addEventListener("click", () => openModal("Add Client"));
-  closeModalBtn?.addEventListener("click", closeModal);
-  cancelBtn?.addEventListener("click", closeModal);
+  search?.addEventListener("input", applyFilters);
+  filter?.addEventListener("change", applyFilters);
 
-  modal?.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
-  });
+  table.addEventListener("click", (e) => {
+    const tr = e.target.closest("tr");
+    if(!tr) return;
 
-  searchInput?.addEventListener("input", applyFilters);
-  statusFilter?.addEventListener("change", applyFilters);
+    if(e.target.classList.contains("btnEdit")){
+      editingRow = tr;
+      mName.value = tr.children[0].textContent.trim();
+      mEmail.value = tr.children[1].textContent.trim();
+      mCompany.value = tr.children[2].textContent.trim();
+      mStatus.value = tr.dataset.status;
+      document.getElementById("clientModal").classList.add("open");
+    }
 
-  document.querySelectorAll(".editBtn").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      editMode = true;
-      const row = e.target.closest(".client-row");
-      openModal("Edit Client");
+    if(e.target.classList.contains("btnToggle")){
+      const next = tr.dataset.status === "active" ? "inactive" : "active";
+      tr.dataset.status = next;
 
-      // Fill form with row dummy data (UI only)
-      document.getElementById("clientName").value = row.children[0].textContent.trim();
-      document.getElementById("clientEmail").value = row.children[1].textContent.trim();
-      document.getElementById("clientCompany").value = row.children[2].textContent.trim();
-      document.getElementById("clientStatus").value = row.dataset.status;
-    });
-  });
+      tr.children[3].innerHTML = next === "active"
+        ? `<span class="chip good"><span class="dot"></span>Active</span>`
+        : `<span class="chip warn"><span class="dot"></span>Inactive</span>`;
 
-  document.querySelectorAll(".toggleBtn").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      const row = e.target.closest(".client-row");
-      const current = row.dataset.status;
-      const next = current === "active" ? "inactive" : "active";
-      row.dataset.status = next;
-
-      // Update pill + button label (UI only)
-      const pill = row.querySelector(".pill");
-      pill.textContent = next === "active" ? "Active" : "Inactive";
-      pill.className = next === "active" ? "pill pill-good" : "pill pill-warn";
       e.target.textContent = next === "active" ? "Deactivate" : "Activate";
-
+      showToast("Status updated", `Client is now ${next.toUpperCase()} (UI only).`);
       applyFilters();
-    });
+    }
   });
 
   form?.addEventListener("submit", (e) => {
     e.preventDefault();
-    alert(editMode ? "Saved changes (UI only)." : "Client added (UI only).");
-    closeModal();
+    showToast("Saved", "Client saved (UI only). Connect to PHP later.");
+    document.getElementById("clientModal").classList.remove("open");
+    editingRow = null;
+    form.reset();
   });
 
   applyFilters();

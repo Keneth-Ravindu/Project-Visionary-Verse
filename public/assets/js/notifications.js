@@ -1,60 +1,70 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const list = document.getElementById("notifList");
-  const unreadCountEl = document.getElementById("unreadCount");
-  const markAllBtn = document.getElementById("markAllBtn");
-  const simulateBtn = document.getElementById("simulateBtn");
+  const filter = document.getElementById("notifFilter");
+  const table = document.getElementById("notifTable");
+  const markAll = document.getElementById("markAll");
+  const simulate = document.getElementById("simulate");
+  const badge = document.getElementById("notifBadge");
 
-  function refreshUnread(){
-    const rows = document.querySelectorAll(".n-row");
-    let unread = 0;
-    rows.forEach(r => { if (r.dataset.read === "false") unread++; });
-    unreadCountEl.textContent = `Unread: ${unread}`;
+  function unreadChip(){
+    return `<span class="chip warn"><span class="dot"></span>Unread</span>`;
+  }
+  function readChip(){
+    return `<span class="chip good"><span class="dot"></span>Read</span>`;
   }
 
-  function markRowRead(row){
-    row.dataset.read = "true";
-    row.children[4].innerHTML = `<span class="pill pill-good">Read</span>`;
+  function updateBadge(){
+    const unread = table.querySelectorAll('tbody tr[data-read="no"]').length;
+    if(badge) badge.textContent = unread;
   }
 
-  // Click a notification row to mark as read
-  document.querySelectorAll(".n-row").forEach(row => {
-    row.addEventListener("click", (e) => {
-      // allow link clicks
-      if (e.target.tagName.toLowerCase() === "a") return;
-      if (row.dataset.read === "false") {
-        markRowRead(row);
-        refreshUnread();
-      }
+  function applyFilter(){
+    const t = filter.value;
+    table.querySelectorAll("tbody tr").forEach(tr => {
+      const ok = (t === "all") || (tr.dataset.type === t);
+      tr.style.display = ok ? "" : "none";
     });
+  }
+
+  filter?.addEventListener("change", applyFilter);
+
+  table.addEventListener("click", (e) => {
+    const tr = e.target.closest("tr");
+    if(!tr) return;
+
+    if(e.target.classList.contains("btnRead")){
+      tr.dataset.read = "yes";
+      tr.children[3].innerHTML = readChip();
+      showToast("Updated", "Notification marked as read (UI only).");
+      updateBadge();
+    }
   });
 
-  markAllBtn?.addEventListener("click", () => {
-    document.querySelectorAll(".n-row").forEach(r => markRowRead(r));
-    refreshUnread();
-    alert("Marked all as read (UI only). Later: update DB.");
+  markAll?.addEventListener("click", () => {
+    table.querySelectorAll('tbody tr').forEach(tr => {
+      tr.dataset.read = "yes";
+      tr.children[3].innerHTML = readChip();
+    });
+    showToast("All read", "All notifications marked as read (UI only).");
+    updateBadge();
   });
 
-  simulateBtn?.addEventListener("click", () => {
-    const row = document.createElement("div");
-    row.className = "t-row t-5 n-row";
-    row.dataset.read = "false";
-    row.innerHTML = `
-      <div>New task assigned to you (Create Post Designs)</div>
-      <div><span class="pill pill-info">Task</span></div>
-      <div><a class="link" href="./tasks.html">Open</a></div>
-      <div>Now</div>
-      <div><span class="pill pill-info">Unread</span></div>
+  simulate?.addEventListener("click", () => {
+    const tr = document.createElement("tr");
+    tr.dataset.type = "task";
+    tr.dataset.read = "no";
+    tr.innerHTML = `
+      <td><span class="chip info"><span class="dot"></span>Task</span></td>
+      <td>Task status changed (To Do → Review)</td>
+      <td>Just now</td>
+      <td>${unreadChip()}</td>
+      <td class="actions"><button class="btn btn-outline btnRead">Mark Read</button></td>
     `;
-    row.addEventListener("click", (e) => {
-      if (e.target.tagName.toLowerCase() === "a") return;
-      if (row.dataset.read === "false") {
-        markRowRead(row);
-        refreshUnread();
-      }
-    });
-    list.appendChild(row);
-    refreshUnread();
+    table.querySelector("tbody").prepend(tr);
+    showToast("New notification", "Simulated task notification added (UI only).");
+    updateBadge();
+    applyFilter();
   });
 
-  refreshUnread();
+  updateBadge();
+  applyFilter();
 });

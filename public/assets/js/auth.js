@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("loginForm");
   const fillDemo = document.getElementById("fillDemo");
+  const form = document.getElementById("loginForm");
 
   fillDemo?.addEventListener("click", () => {
     document.getElementById("email").value = "demo@visionaryverse.com";
@@ -10,10 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   form?.addEventListener("submit", (e) => {
     e.preventDefault();
     const role = document.getElementById("role").value;
-
-    // Frontend demo redirect by role
-    if (role === "admin") window.location.href = "./dashboard-admin.html";
-    if (role === "staff") window.location.href = "./dashboard-staff.html";
-    if (role === "client") window.location.href = "./dashboard-client.html";
+    if(role === "admin") location.href = "./dashboard-admin.html";
+    if(role === "staff") location.href = "./dashboard-staff.html";
+    if(role === "client") location.href = "./dashboard-client.html";
   });
 });

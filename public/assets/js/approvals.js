@@ -1,83 +1,72 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const roleView = document.getElementById("roleView");
-  const openUploadBtn = document.getElementById("openUploadBtn");
-  const uploadModal = document.getElementById("uploadModal");
-  const closeUploadModal = document.getElementById("closeUploadModal");
-  const cancelUpload = document.getElementById("cancelUpload");
-  const uploadForm = document.getElementById("uploadForm");
+  const search = document.getElementById("approvalSearch");
+  const filter = document.getElementById("approvalFilter");
+  const table = document.getElementById("approvalsTable");
 
-  const statusFilter = document.getElementById("statusFilter");
-  const approvalNote = document.getElementById("approvalNote");
+  const uploadForm = document.getElementById("deliverableForm");
+  const mName = document.getElementById("mDelivName");
+  const mProject = document.getElementById("mDelivProject");
+  const mBy = document.getElementById("mDelivBy");
 
-  const feedbackModal = document.getElementById("feedbackModal");
-  const closeFeedbackModal = document.getElementById("closeFeedbackModal");
-  const cancelFeedback = document.getElementById("cancelFeedback");
-  const feedbackForm = document.getElementById("feedbackForm");
+  const viewModal = document.getElementById("viewDeliverableModal");
+  const viewTitle = document.getElementById("viewTitle");
+  const viewSub = document.getElementById("viewSub");
 
-  function openModal(m){ m.hidden = false; }
-  function closeModal(m){ m.hidden = true; }
+  function chipForStatus(status){
+    const cls = status === "Approved" ? "good"
+      : status === "Pending" ? "warn"
+      : "danger";
+    return `<span class="chip ${cls}"><span class="dot"></span>${status}</span>`;
+  }
 
-  function applyFilter(){
-    const f = statusFilter.value;
-    document.querySelectorAll(".d-row").forEach(row => {
-      const st = row.dataset.status;
-      row.style.display = (f === "all" || st === f) ? "" : "none";
+  function applyFilters(){
+    const q = (search.value || "").toLowerCase().trim();
+    const st = filter.value;
+
+    table.querySelectorAll("tbody tr").forEach(tr => {
+      const name = (tr.dataset.name || "").toLowerCase();
+      const status = tr.dataset.status;
+      const okText = !q || name.includes(q);
+      const okStatus = (st === "all") || (status === st);
+      tr.style.display = (okText && okStatus) ? "" : "none";
     });
   }
 
-  function setRoleUI(){
-    const isClient = roleView.value === "client";
-    openUploadBtn.style.display = isClient ? "none" : "";
-    document.querySelectorAll(".approveBtn,.changesBtn").forEach(b => b.style.display = isClient ? "" : "none");
-    approvalNote.textContent = isClient
-      ? "Client View: approve/request changes (UI only)."
-      : "Team View: upload deliverables (UI only).";
-  }
+  search?.addEventListener("input", applyFilters);
+  filter?.addEventListener("change", applyFilters);
 
-  roleView?.addEventListener("change", setRoleUI);
+  table.addEventListener("click", (e) => {
+    const tr = e.target.closest("tr");
+    if(!tr) return;
 
-  openUploadBtn?.addEventListener("click", () => openModal(uploadModal));
-  closeUploadModal?.addEventListener("click", () => closeModal(uploadModal));
-  cancelUpload?.addEventListener("click", () => closeModal(uploadModal));
-  uploadModal?.addEventListener("click", (e) => { if(e.target === uploadModal) closeModal(uploadModal); });
+    if(e.target.classList.contains("btnView")){
+      viewTitle.textContent = tr.children[0].textContent.trim();
+      viewSub.textContent = `Project: ${tr.children[1].textContent.trim()} • Status: ${tr.dataset.status}`;
+      viewModal.classList.add("open");
+    }
+
+    if(e.target.classList.contains("btnApprove")){
+      tr.dataset.status = "Approved";
+      tr.children[3].innerHTML = chipForStatus("Approved");
+      showToast("Approved", "Deliverable approved (UI only).");
+      applyFilters();
+    }
+
+    if(e.target.classList.contains("btnChanges")){
+      tr.dataset.status = "Changes Requested";
+      tr.children[3].innerHTML = chipForStatus("Changes Requested");
+      showToast("Changes requested", "Client requested changes (UI only).");
+      applyFilters();
+    }
+  });
 
   uploadForm?.addEventListener("submit", (e) => {
     e.preventDefault();
-    alert("Uploaded (UI only). Later: save to DB + notify client.");
-    closeModal(uploadModal);
+    showToast("Uploaded", "Deliverable uploaded (UI only).");
+    document.getElementById("deliverableModal").classList.remove("open");
     uploadForm.reset();
+    applyFilters();
   });
 
-  // Approve / Request changes
-  document.querySelectorAll(".approveBtn").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      const row = e.target.closest(".d-row");
-      row.dataset.status = "approved";
-      const pill = row.querySelector(".statusPill");
-      pill.className = "pill pill-good statusPill";
-      pill.textContent = "Approved";
-      approvalNote.textContent = "Approved (UI only). Later: store decision + notify team.";
-      applyFilter();
-    });
-  });
-
-  document.querySelectorAll(".changesBtn").forEach(btn => {
-    btn.addEventListener("click", () => openModal(feedbackModal));
-  });
-
-  closeFeedbackModal?.addEventListener("click", () => closeModal(feedbackModal));
-  cancelFeedback?.addEventListener("click", () => closeModal(feedbackModal));
-  feedbackModal?.addEventListener("click", (e) => { if(e.target === feedbackModal) closeModal(feedbackModal); });
-
-  feedbackForm?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    alert("Changes requested (UI only). Later: save feedback + notify team.");
-    closeModal(feedbackModal);
-    feedbackForm.reset();
-  });
-
-  statusFilter?.addEventListener("change", applyFilter);
-
-  setRoleUI();
-  applyFilter();
+  applyFilters();
 });

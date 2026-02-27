@@ -3,187 +3,207 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Visionary Verse | Approvals</title>
-  <link rel="stylesheet" href="../assets/css/main.css" />
+  <title>Approvals</title>
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <link rel="icon" type="image/png" href="../assets/img/logo.png" />
+  <script defer src="../assets/js/app.js"></script>
   <script defer src="../assets/js/approvals.js"></script>
 </head>
 <body>
-  <div class="app">
-    <aside class="sidebar">
+  <div class="topnav">
+    <div class="topbar">
       <div class="brand">
-        <div class="brand-logo">VV</div>
+        <button class="iconbtn" id="openDrawer">☰</button>
+        <img class="brand-logo-img" src="../assets/img/logo.png" alt="Visionary Verse logo" />
         <div class="brand-text">
           <div class="brand-name">Visionary Verse</div>
-          <div class="brand-role">Approvals</div>
+          <div class="brand-sub">Client Approvals</div>
         </div>
       </div>
 
-      <nav class="nav">
-        <a class="nav-link" href="./dashboard-admin.html">Dashboard</a>
-        <a class="nav-link" href="./clients.html">Clients</a>
-        <a class="nav-link" href="./projects.html">Projects</a>
-        <a class="nav-link" href="./tasks.html">Tasks</a>
-        <a class="nav-link active" href="./approvals.html">Approvals</a>
-        <a class="nav-link" href="./reports.html">Reports</a>
-        <a class="nav-link" href="./dss.html">DSS</a>
-        <a class="nav-link" href="./notifications.html">Notifications</a>
-        <a class="nav-link" href="./chatbot.html">Chatbot</a>
-      </nav>
-
-      <div class="sidebar-footer">
-        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+      <div class="right">
+        <span class="role-pill">Admin / Staff / Client</span>
+        <div class="dropdown">
+          <button class="iconbtn" id="notifBtn">🔔 <span class="badge">1</span></button>
+          <div class="menu" id="notifMenu">
+            <div class="item"><b>Deliverable uploaded</b><small>SEO Report v1</small></div>
+          </div>
+        </div>
+        <button class="btn btn-outline" onclick="location.href='./auth-login.html'">Logout</button>
       </div>
-    </aside>
+    </div>
 
-    <main class="main">
-      <header class="topbar">
-        <div>
-          <h1 class="page-title">Client Approval Module</h1>
-          <p class="page-subtitle">Upload deliverables and let clients approve or request changes.</p>
-        </div>
-
-        <div class="topbar-actions">
-          <select class="input" id="roleView">
-            <option value="team" selected>Team View (Upload)</option>
-            <option value="client">Client View (Approve)</option>
-          </select>
-          <button class="btn" id="openUploadBtn">+ Upload Deliverable</button>
-        </div>
-      </header>
-
-      <section class="card">
-        <div class="card-header">
-          <h2>Deliverables</h2>
-          <div class="row">
-            <select class="input" id="statusFilter">
-              <option value="all">All</option>
-              <option value="pending" selected>Pending</option>
-              <option value="approved">Approved</option>
-              <option value="changes">Changes Requested</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="table">
-          <div class="t-row t-head t-6">
-            <div>Deliverable</div><div>Project</div><div>Version</div><div>Status</div><div>Uploaded</div><div>Action</div>
-          </div>
-
-          <div class="t-row t-6 d-row" data-status="pending">
-            <div>SEO Report</div>
-            <div>SEO Optimization</div>
-            <div>v1</div>
-            <div><span class="pill pill-warn statusPill">Pending</span></div>
-            <div>2026-02-26</div>
-            <div class="actions-inline">
-              <button class="btn btn-outline btn-sm viewBtn">View</button>
-              <button class="btn btn-sm approveBtn">Approve</button>
-              <button class="btn btn-outline btn-sm changesBtn">Request Changes</button>
-            </div>
-          </div>
-
-          <div class="t-row t-6 d-row" data-status="approved">
-            <div>Ad Creative</div>
-            <div>Ads Campaign</div>
-            <div>v2</div>
-            <div><span class="pill pill-good statusPill">Approved</span></div>
-            <div>2026-02-20</div>
-            <div class="actions-inline">
-              <button class="btn btn-outline btn-sm viewBtn">View</button>
-              <button class="btn btn-outline btn-sm">Download</button>
-            </div>
-          </div>
-
-          <div class="t-row t-6 d-row" data-status="changes">
-            <div>Post Designs</div>
-            <div>Social Media Content</div>
-            <div>v3</div>
-            <div><span class="pill pill-danger statusPill">Changes</span></div>
-            <div>2026-02-18</div>
-            <div class="actions-inline">
-              <button class="btn btn-outline btn-sm viewBtn">View</button>
-              <button class="btn btn-outline btn-sm">Read Feedback</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="note" id="approvalNote" style="margin-top:12px">
-          UI only. Later: approve/request changes will call PHP endpoints and trigger notifications.
-        </div>
-      </section>
-
-      <!-- Upload modal -->
-      <section class="modal" id="uploadModal" hidden>
-        <div class="modal-card">
-          <div class="modal-head">
-            <h2>Upload Deliverable</h2>
-            <button class="icon-btn" id="closeUploadModal" aria-label="Close">✕</button>
-          </div>
-
-          <form id="uploadForm" class="form">
-            <div class="form-grid">
-              <label class="label">
-                Project
-                <select class="input" id="upProject" required>
-                  <option value="">Select project</option>
-                  <option>SEO Optimization</option>
-                  <option>Ads Campaign</option>
-                  <option>Social Media Content</option>
-                </select>
-              </label>
-
-              <label class="label">
-                Version
-                <input class="input" id="upVersion" placeholder="v1" required />
-              </label>
-
-              <label class="label">
-                File (UI only)
-                <input class="input" id="upFile" type="file" />
-              </label>
-
-              <label class="label">
-                Notes
-                <input class="input" id="upNotes" placeholder="Short description..." />
-              </label>
-            </div>
-
-            <div class="modal-actions">
-              <button type="button" class="btn btn-outline" id="cancelUpload">Cancel</button>
-              <button type="submit" class="btn">Upload</button>
-            </div>
-
-            <p class="muted small">Later: file upload → PHP UploadService + MySQL deliverables table.</p>
-          </form>
-        </div>
-      </section>
-
-      <!-- Feedback modal -->
-      <section class="modal" id="feedbackModal" hidden>
-        <div class="modal-card">
-          <div class="modal-head">
-            <h2>Request Changes</h2>
-            <button class="icon-btn" id="closeFeedbackModal" aria-label="Close">✕</button>
-          </div>
-
-          <form id="feedbackForm" class="form">
-            <label class="label">
-              Feedback
-              <textarea class="input" id="feedbackText" rows="5" placeholder="Describe what to change..." required></textarea>
-            </label>
-
-            <div class="modal-actions">
-              <button type="button" class="btn btn-outline" id="cancelFeedback">Cancel</button>
-              <button type="submit" class="btn">Send</button>
-            </div>
-
-            <p class="muted small">Later: store feedback in approvals table and notify team.</p>
-          </form>
-        </div>
-      </section>
-
-      <footer class="footer">© Visionary Verse — Approvals</footer>
-    </main>
+    <div class="tabs">
+      <a class="tab" href="./dashboard-admin.html">Dashboard</a>
+      <a class="tab" href="./clients.html">Clients</a>
+      <a class="tab" href="./projects.html">Projects</a>
+      <a class="tab" href="./tasks.html">Tasks</a>
+      <a class="tab active" href="./approvals.html">Approvals</a>
+      <a class="tab" href="./reports.html">Reports</a>
+      <a class="tab" href="./dss.html">DSS</a>
+      <a class="tab" href="./notifications.html">Notifications</a>
+      <a class="tab" href="./chatbot.html">Chatbot</a>
+    </div>
   </div>
+
+  <div class="drawer" id="drawer">
+    <div class="drawer-panel">
+      <div class="input-row" style="justify-content:space-between">
+        <div class="brand">
+          <img class="brand-logo-img" src="../assets/img/logo.png" alt="Visionary Verse logo" />
+          <div><div class="brand-name">Visionary Verse</div><div class="brand-sub">Menu</div></div>
+        </div>
+        <button class="iconbtn" id="closeDrawer">✕</button>
+      </div>
+
+      <a class="tab" href="./dashboard-admin.html">Dashboard</a>
+      <a class="tab" href="./clients.html">Clients</a>
+      <a class="tab" href="./projects.html">Projects</a>
+      <a class="tab" href="./tasks.html">Tasks</a>
+      <a class="tab active" href="./approvals.html">Approvals</a>
+      <a class="tab" href="./reports.html">Reports</a>
+      <a class="tab" href="./dss.html">DSS</a>
+      <a class="tab" href="./notifications.html">Notifications</a>
+      <a class="tab" href="./chatbot.html">Chatbot</a>
+    </div>
+  </div>
+
+  <div class="wrap page">
+    <div class="input-row" style="justify-content:space-between; flex-wrap:wrap">
+      <div>
+        <h1 class="h1">Client Approval Module</h1>
+        <p class="sub">Upload deliverables and get client approval or change requests.</p>
+      </div>
+
+      <div class="input-row" style="flex-wrap:wrap">
+        <input class="input" id="approvalSearch" placeholder="Search deliverables..." style="width:260px" />
+        <select class="input" id="approvalFilter" style="width:180px">
+          <option value="all">All</option>
+          <option value="Pending" selected>Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Changes Requested">Changes Requested</option>
+        </select>
+        <button class="btn" data-open="deliverableModal">+ Upload Deliverable</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <table class="table" id="approvalsTable">
+        <thead>
+          <tr>
+            <th>Deliverable</th>
+            <th>Project</th>
+            <th>Uploaded By</th>
+            <th>Status</th>
+            <th>Uploaded</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-name="SEO Report v1" data-status="Pending">
+            <td>SEO Report v1</td>
+            <td>SEO Optimization</td>
+            <td>Sam</td>
+            <td><span class="chip warn"><span class="dot"></span>Pending</span></td>
+            <td>2026-02-26</td>
+            <td class="actions">
+              <button class="btn btn-outline btnView">View</button>
+              <button class="btn btn-ghost btnApprove">Approve</button>
+              <button class="btn btn-ghost btnChanges">Request Changes</button>
+            </td>
+          </tr>
+
+          <tr data-name="Ad Banner Set" data-status="Approved">
+            <td>Ad Banner Set</td>
+            <td>Ads Campaign</td>
+            <td>Nisha</td>
+            <td><span class="chip good"><span class="dot"></span>Approved</span></td>
+            <td>2026-02-24</td>
+            <td class="actions">
+              <button class="btn btn-outline btnView">View</button>
+            </td>
+          </tr>
+
+          <tr data-name="Homepage Mockup" data-status="Changes Requested">
+            <td>Homepage Mockup</td>
+            <td>Website Redesign</td>
+            <td>Ravi</td>
+            <td><span class="chip danger"><span class="dot"></span>Changes Requested</span></td>
+            <td>2026-02-20</td>
+            <td class="actions">
+              <button class="btn btn-outline btnView">View</button>
+              <button class="btn btn-ghost btnApprove">Approve</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">© Visionary Verse — Approvals</div>
+  </div>
+
+  <!-- Upload Modal -->
+  <div class="modal" id="deliverableModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <div style="font-weight:950">Upload Deliverable</div>
+          <div class="sub">UI only (store in DB later)</div>
+        </div>
+        <button class="iconbtn" data-close="deliverableModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="deliverableForm">
+          <div class="form-grid">
+            <div>
+              <label style="font-weight:950">Deliverable Name</label>
+              <input class="input" id="mDelivName" required />
+            </div>
+            <div>
+              <label style="font-weight:950">Project</label>
+              <input class="input" id="mDelivProject" required />
+            </div>
+            <div>
+              <label style="font-weight:950">File (UI only)</label>
+              <input class="input" id="mDelivFile" type="file" />
+            </div>
+            <div>
+              <label style="font-weight:950">Uploaded By</label>
+              <input class="input" id="mDelivBy" required />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-outline" type="button" data-close="deliverableModal">Cancel</button>
+            <button class="btn" type="submit">Upload</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Modal -->
+  <div class="modal" id="viewDeliverableModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <div style="font-weight:950" id="viewTitle">Deliverable</div>
+          <div class="sub" id="viewSub">Preview (UI only)</div>
+        </div>
+        <button class="iconbtn" data-close="viewDeliverableModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="callout info">
+          <strong>Preview Area</strong>
+          <p>Later you can show PDF/image preview or a download link stored on server.</p>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-outline" type="button" data-close="viewDeliverableModal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><strong></strong><p></p></div>
 </body>
 </html>

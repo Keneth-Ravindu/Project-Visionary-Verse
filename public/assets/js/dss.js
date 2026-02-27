@@ -1,59 +1,52 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const projectPick = document.getElementById("projectPick");
-  const clientPick = document.getElementById("clientPick");
-  const recalcBtn = document.getElementById("recalcBtn");
+  const riskBtn = document.getElementById("recalcRisk");
+  const priorityBtn = document.getElementById("recalcPriority");
 
-  const projects = {
-    ads: { total: 9, done: 4, overdue: 3, days: 3 },
-    seo: { total: 12, done: 8, overdue: 1, days: 5 },
-    social: { total: 8, done: 6, overdue: 0, days: 8 },
-  };
+  const riskTable = document.getElementById("riskTable");
+  const priorityTable = document.getElementById("priorityTable");
 
-  const clients = {
-    nova: { budget: "High", urgency: "High", tier: "VIP", complexity: "Medium", score: 86, points: { b:36,u:27,t:18,c:5 } },
-    glow: { budget: "Medium", urgency: "Medium", tier: "Regular", complexity: "Medium", score: 63, points: { b:24,u:18,t:12,c:9 } },
-    sky:  { budget: "High", urgency: "Medium", tier: "Regular", complexity: "High", score: 72, points: { b:34,u:18,t:12,c:8 } },
-  };
-
-  function riskLevel({ total, done, overdue, days }){
-    const doneRate = total ? (done/total) : 0;
-    if (overdue >= 2 && days <= 3) return { level:"High Risk", type:"danger", reason:`${overdue} overdue tasks and deadline is near.` };
-    if (overdue >= 1 || (days <= 5 && doneRate < 0.7)) return { level:"Medium Risk", type:"warn", reason:`Some overdue/slow progress detected.` };
-    return { level:"Low Risk", type:"info", reason:`Progress looks healthy.` };
+  function riskChip(level){
+    const cls = level === "High" ? "danger" : level === "Medium" ? "warn" : "good";
+    return `<span class="chip ${cls}"><span class="dot"></span>${level}</span>`;
   }
 
-  function refresh(){
-    // project risk
-    const p = projects[projectPick.value];
-    document.getElementById("mTotal").textContent = p.total;
-    document.getElementById("mDone").textContent = p.done;
-    document.getElementById("mOverdue").textContent = p.overdue;
-    document.getElementById("mDays").textContent = p.days;
-
-    const r = riskLevel(p);
-    const riskBox = document.getElementById("riskBox");
-    riskBox.className = `alert alert-${r.type}`;
-    document.getElementById("riskTitle").textContent = r.level;
-    document.getElementById("riskReason").textContent = r.reason;
-
-    // client priority
-    const c = clients[clientPick.value];
-    document.getElementById("priorityScore").textContent = c.score;
-
-    document.getElementById("fBudget").textContent = c.budget;
-    document.getElementById("fUrgency").textContent = c.urgency;
-    document.getElementById("fTier").textContent = c.tier;
-    document.getElementById("fComplex").textContent = c.complexity;
-
-    document.getElementById("pBudget").textContent = c.points.b;
-    document.getElementById("pUrgency").textContent = c.points.u;
-    document.getElementById("pTier").textContent = c.points.t;
-    document.getElementById("pComplex").textContent = c.points.c;
+  function computeRisk(overdue, days){
+    // Simple demo rule:
+    // High if overdue>=3 OR days<=2
+    // Medium if overdue>=1 OR days<=7
+    // else Low
+    if(overdue >= 3 || days <= 2) return "High";
+    if(overdue >= 1 || days <= 7) return "Medium";
+    return "Low";
   }
 
-  projectPick?.addEventListener("change", refresh);
-  clientPick?.addEventListener("change", refresh);
-  recalcBtn?.addEventListener("click", () => alert("Recalculate UI only. Later: call /api/dss endpoints."));
+  riskBtn?.addEventListener("click", () => {
+    riskTable.querySelectorAll("tbody tr").forEach(tr => {
+      const overdue = parseInt(tr.dataset.overdue || "0", 10);
+      const days = parseInt(tr.dataset.days || "999", 10);
+      const level = computeRisk(overdue, days);
+      tr.children[3].innerHTML = riskChip(level);
+    });
+    showToast("DSS updated", "Project delay risks recalculated (UI only).");
+  });
 
-  refresh();
+  function scoreChip(score){
+    return `<span class="chip info"><span class="dot"></span>${score}</span>`;
+  }
+
+  function computeScore(urgency, value, active){
+    // Demo formula
+    return Math.min(100, Math.round(urgency*5 + value*5 + active*3));
+  }
+
+  priorityBtn?.addEventListener("click", () => {
+    priorityTable.querySelectorAll("tbody tr").forEach(tr => {
+      const u = parseInt(tr.dataset.urgency || "0", 10);
+      const v = parseInt(tr.dataset.value || "0", 10);
+      const a = parseInt(tr.dataset.active || "0", 10);
+      const score = computeScore(u,v,a);
+      tr.children[4].innerHTML = scoreChip(score);
+    });
+    showToast("DSS updated", "Client priority scores updated (UI only).");
+  });
 });
