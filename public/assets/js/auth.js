@@ -19,11 +19,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const role = roleSelect ? roleSelect.value.toLowerCase() : "";
 
             if (role === "admin") {
-                window.location.href = "/pvv/public/dashboard/admin";
+                window.location.href = "/Project-Visionary-Verse/public/dashboard/admin";
             } else if (role === "client") {
-                window.location.href = "/pvv/public/dashboard/client";
+                window.location.href = "/Project-Visionary-Verse/public/dashboard/client";
             } else if (role === "staff") {
-                window.location.href = "/pvv/public/dashboard/staff";
+                window.location.href = "/Project-Visionary-Verse/public/dashboard/staff";
             } else {
                 alert("Please select a valid role.");
             }
