@@ -1,17 +1,32 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const fillDemo = document.getElementById("fillDemo");
-  const form = document.getElementById("loginForm");
+    const form = document.querySelector("form");
+    const fillDemoBtn = document.querySelector(".btn-ghost, .btn-secondary, button[type='button']");
+    const emailInput = document.querySelector("#email, input[type='email']");
+    const passwordInput = document.querySelector("#password, input[type='password']");
+    const roleSelect = document.querySelector("#role, select");
 
-  fillDemo?.addEventListener("click", () => {
-    document.getElementById("email").value = "demo@visionaryverse.com";
-    document.getElementById("password").value = "password";
-  });
+    if (fillDemoBtn) {
+        fillDemoBtn.addEventListener("click", () => {
+            if (emailInput) emailInput.value = "demo@visionaryverse.com";
+            if (passwordInput) passwordInput.value = "password";
+        });
+    }
 
-  form?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const role = document.getElementById("role").value;
-    if(role === "admin") location.href = "./dashboard-admin.html";
-    if(role === "staff") location.href = "./dashboard-staff.html";
-    if(role === "client") location.href = "./dashboard-client.html";
-  });
+    if (form) {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const role = roleSelect ? roleSelect.value.toLowerCase() : "";
+
+            if (role === "admin") {
+                window.location.href = "/pvv/public/dashboard/admin";
+            } else if (role === "client") {
+                window.location.href = "/pvv/public/dashboard/client";
+            } else if (role === "staff") {
+                window.location.href = "/pvv/public/dashboard/staff";
+            } else {
+                alert("Please select a valid role.");
+            }
+        });
+    }
 });
