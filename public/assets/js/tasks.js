@@ -1,105 +1,94 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const search = document.getElementById("taskSearch");
-  const priorityFilter = document.getElementById("priorityFilter");
-  const statusFilter = document.getElementById("statusFilter");
-  const table = document.getElementById("tasksTable");
-  const form = document.getElementById("taskForm");
+    const search = document.getElementById("taskSearch");
+    const priorityFilter = document.getElementById("priorityFilter");
+    const statusFilter = document.getElementById("statusFilter");
+    const table = document.getElementById("tasksTable");
 
-  const mName = document.getElementById("mTaskName");
-  const mProject = document.getElementById("mTaskProject");
-  const mAssignee = document.getElementById("mTaskAssignee");
-  const mPriority = document.getElementById("mTaskPriority");
-  const mStatus = document.getElementById("mTaskStatus");
-  const mDeadline = document.getElementById("mTaskDeadline");
+    const form = document.getElementById("taskForm");
+    const modalTitle = document.getElementById("taskModalTitle");
+    const hiddenId = document.getElementById("mTaskId");
 
-  let editingRow = null;
+    const mName = document.getElementById("mTaskName");
+    const mProject = document.getElementById("mTaskProject");
+    const mAssignee = document.getElementById("mTaskAssignee");
+    const mPriority = document.getElementById("mTaskPriority");
+    const mStatus = document.getElementById("mTaskStatus");
+    const mDeadline = document.getElementById("mTaskDeadline");
+    const mDescription = document.getElementById("mTaskDescription");
 
-  function priorityChip(p){
-    const cls = p === "High" ? "danger" : p === "Medium" ? "warn" : "";
-    return `<span class="chip ${cls}"><span class="dot"></span>${p}</span>`;
-  }
-  function statusChip(s){
-    const cls = s === "Done" ? "good" : s === "Review" ? "warn" : s === "In Progress" ? "good" : "info";
-    return `<span class="chip ${cls}"><span class="dot"></span>${s}</span>`;
-  }
+    function applyFilters() {
+        const q = (search?.value || "").toLowerCase().trim();
+        const pr = (priorityFilter?.value || "all").toLowerCase();
+        const st = (statusFilter?.value || "all").toLowerCase();
 
-  function applyFilters(){
-    const q = (search.value || "").toLowerCase().trim();
-    const pr = priorityFilter.value;
-    const st = statusFilter.value;
+        table?.querySelectorAll("tbody tr").forEach(tr => {
+            const name = (tr.dataset.name || "").toLowerCase();
+            const priority = (tr.dataset.priority || "").toLowerCase();
+            const status = (tr.dataset.status || "").toLowerCase();
 
-    table.querySelectorAll("tbody tr").forEach(tr => {
-      const name = (tr.dataset.name || "").toLowerCase();
-      const okText = !q || name.includes(q);
-      const okP = (pr === "all") || (tr.dataset.priority === pr);
-      const okS = (st === "all") || (tr.dataset.status === st);
-      tr.style.display = (okText && okP && okS) ? "" : "none";
+            const okText = !q || name.includes(q);
+            const okP = pr === "all" || priority === pr;
+            const okS = st === "all" || status === st;
+
+            tr.style.display = (okText && okP && okS) ? "" : "none";
+        });
+    }
+
+    search?.addEventListener("input", applyFilters);
+    priorityFilter?.addEventListener("change", applyFilters);
+    statusFilter?.addEventListener("change", applyFilters);
+
+    function resetFormToCreateMode() {
+        if (!form) return;
+
+        form.action = "/Project-Visionary-Verse/public/task/store";
+        if (modalTitle) modalTitle.textContent = "Task Details";
+        if (hiddenId) hiddenId.value = "";
+
+        if (mName) mName.value = "";
+        if (mProject) mProject.value = "";
+        if (mAssignee) mAssignee.value = "";
+        if (mPriority) mPriority.value = "High";
+        if (mStatus) mStatus.value = "To Do";
+        if (mDeadline) mDeadline.value = "";
+        if (mDescription) mDescription.value = "";
+    }
+
+    document.querySelectorAll('[data-open="taskModal"]').forEach(btn => {
+        btn.addEventListener("click", () => {
+            resetFormToCreateMode();
+        });
     });
-  }
 
-  search?.addEventListener("input", applyFilters);
-  priorityFilter?.addEventListener("change", applyFilters);
-  statusFilter?.addEventListener("change", applyFilters);
+    document.querySelectorAll(".btnEdit").forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const id = btn.dataset.id;
+            if (!id) return;
 
-  table.addEventListener("click", (e) => {
-    const tr = e.target.closest("tr");
-    if(!tr) return;
+            try {
+                const response = await fetch(`/Project-Visionary-Verse/public/task/edit/${id}`);
+                const task = await response.json();
 
-    if(e.target.classList.contains("btnEdit")){
-      editingRow = tr;
-      mName.value = tr.children[0].textContent.trim();
-      mProject.value = tr.children[1].textContent.trim();
-      mAssignee.value = tr.children[2].textContent.trim();
-      mPriority.value = tr.dataset.priority;
-      mStatus.value = tr.dataset.status;
-      mDeadline.value = tr.children[5].textContent.trim();
-      document.getElementById("taskModal").classList.add("open");
-    }
+                if (form) form.action = `/Project-Visionary-Verse/public/task/update/${id}`;
+                if (modalTitle) modalTitle.textContent = "Edit Task";
+                if (hiddenId) hiddenId.value = task.task_id || "";
 
-    if(e.target.classList.contains("btnMove")){
-      const order = ["To Do","In Progress","Review","Done"];
-      const idx = order.indexOf(tr.dataset.status);
-      const next = order[(idx + 1) % order.length];
+                if (mName) mName.value = task.name || "";
+                if (mProject) mProject.value = task.project_id || "";
+                if (mAssignee) mAssignee.value = task.assignee_id || "";
+                if (mPriority) mPriority.value = task.priority || "High";
+                if (mStatus) mStatus.value = task.status || "To Do";
+                if (mDeadline) mDeadline.value = task.deadline || "";
+                if (mDescription) mDescription.value = task.description || "";
 
-      tr.dataset.status = next;
-      tr.children[4].innerHTML = statusChip(next);
+                const modal = document.getElementById("taskModal");
+                if (modal) modal.classList.add("open");
+            } catch (error) {
+                alert("Failed to load task details.");
+                console.error(error);
+            }
+        });
+    });
 
-      showToast("Task moved", `Status changed to ${next} (UI only).`);
-
-      // Simulate "real-time notification" behavior
-      if(next === "Review"){
-        setTimeout(() => showToast("Notification", "Client/Assignee notified (AJAX polling later)."), 300);
-      }
-
-      applyFilters();
-    }
-  });
-
-  form?.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    if(editingRow){
-      editingRow.dataset.name = mName.value.trim();
-      editingRow.dataset.priority = mPriority.value;
-      editingRow.dataset.status = mStatus.value;
-
-      editingRow.children[0].textContent = mName.value.trim();
-      editingRow.children[1].textContent = mProject.value.trim();
-      editingRow.children[2].textContent = mAssignee.value.trim();
-      editingRow.children[3].innerHTML = priorityChip(mPriority.value);
-      editingRow.children[4].innerHTML = statusChip(mStatus.value);
-      editingRow.children[5].textContent = mDeadline.value;
-
-      showToast("Saved", "Task updated (UI only).");
-    } else {
-      showToast("Saved", "Task saved (UI only).");
-    }
-
-    document.getElementById("taskModal").classList.remove("open");
-    editingRow = null;
-    form.reset();
     applyFilters();
-  });
-
-  applyFilters();
 });
