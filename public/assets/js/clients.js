@@ -1,66 +1,84 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const search = document.getElementById("clientSearch");
-  const filter = document.getElementById("clientStatus");
-  const table = document.getElementById("clientsTable");
-  const form = document.getElementById("clientForm");
+    const searchInput = document.getElementById("clientSearch");
+    const statusFilter = document.getElementById("clientStatus");
+    const table = document.getElementById("clientsTable");
+    const rows = table ? Array.from(table.querySelectorAll("tbody tr")) : [];
 
-  const mName = document.getElementById("mClientName");
-  const mEmail = document.getElementById("mClientEmail");
-  const mCompany = document.getElementById("mClientCompany");
-  const mStatus = document.getElementById("mClientStatus");
+    const clientForm = document.getElementById("clientForm");
+    const modalTitle = document.getElementById("clientModalTitle");
+    const hiddenId = document.getElementById("mClientId");
 
-  let editingRow = null;
+    const nameInput = document.getElementById("mClientName");
+    const companyInput = document.getElementById("mClientCompany");
+    const emailInput = document.getElementById("mClientEmail");
+    const phoneInput = document.getElementById("mClientPhone");
+    const statusInput = document.getElementById("mClientStatus");
 
-  function applyFilters(){
-    const q = (search.value || "").toLowerCase().trim();
-    const st = filter.value;
+    function filterRows() {
+        const q = (searchInput?.value || "").toLowerCase().trim();
+        const status = (statusFilter?.value || "all").toLowerCase();
 
-    table.querySelectorAll("tbody tr").forEach(tr => {
-      const name = (tr.dataset.name || "").toLowerCase();
-      const status = tr.dataset.status;
-      const okText = !q || name.includes(q);
-      const okStatus = (st === "all") || (status === st);
-      tr.style.display = (okText && okStatus) ? "" : "none";
+        rows.forEach((row) => {
+            const name = (row.dataset.name || "").toLowerCase();
+            const rowStatus = (row.dataset.status || "").toLowerCase();
+
+            const matchesSearch = name.includes(q);
+            const matchesStatus = status === "all" || rowStatus === status;
+
+            row.style.display = matchesSearch && matchesStatus ? "" : "none";
+        });
+    }
+
+    if (searchInput) searchInput.addEventListener("input", filterRows);
+    if (statusFilter) statusFilter.addEventListener("change", filterRows);
+
+    function resetFormToCreateMode() {
+        if (!clientForm) return;
+
+        clientForm.action = "/Project-Visionary-Verse/public/client/store";
+        if (modalTitle) modalTitle.textContent = "Client Details";
+        if (hiddenId) hiddenId.value = "";
+
+        if (nameInput) nameInput.value = "";
+        if (companyInput) companyInput.value = "";
+        if (emailInput) emailInput.value = "";
+        if (phoneInput) phoneInput.value = "";
+        if (statusInput) statusInput.value = "active";
+    }
+
+    document.querySelectorAll('[data-open="clientModal"]').forEach((btn) => {
+        btn.addEventListener("click", () => {
+            resetFormToCreateMode();
+        });
     });
-  }
 
-  search?.addEventListener("input", applyFilters);
-  filter?.addEventListener("change", applyFilters);
+    document.querySelectorAll(".btnEdit").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+            const id = btn.dataset.id;
+            if (!id) return;
 
-  table.addEventListener("click", (e) => {
-    const tr = e.target.closest("tr");
-    if(!tr) return;
+            try {
+                const response = await fetch(`/Project-Visionary-Verse/public/client/edit/${id}`);
+                const client = await response.json();
 
-    if(e.target.classList.contains("btnEdit")){
-      editingRow = tr;
-      mName.value = tr.children[0].textContent.trim();
-      mEmail.value = tr.children[1].textContent.trim();
-      mCompany.value = tr.children[2].textContent.trim();
-      mStatus.value = tr.dataset.status;
-      document.getElementById("clientModal").classList.add("open");
-    }
+                if (clientForm) clientForm.action = `/Project-Visionary-Verse/public/client/update/${id}`;
+                if (modalTitle) modalTitle.textContent = "Edit Client";
+                if (hiddenId) hiddenId.value = client.client_id || "";
 
-    if(e.target.classList.contains("btnToggle")){
-      const next = tr.dataset.status === "active" ? "inactive" : "active";
-      tr.dataset.status = next;
+                if (nameInput) nameInput.value = client.name || "";
+                if (companyInput) companyInput.value = client.company || "";
+                if (emailInput) emailInput.value = client.email || "";
+                if (phoneInput) phoneInput.value = client.phone || "";
+                if (statusInput) statusInput.value = client.status || "active";
 
-      tr.children[3].innerHTML = next === "active"
-        ? `<span class="chip good"><span class="dot"></span>Active</span>`
-        : `<span class="chip warn"><span class="dot"></span>Inactive</span>`;
-
-      e.target.textContent = next === "active" ? "Deactivate" : "Activate";
-      showToast("Status updated", `Client is now ${next.toUpperCase()} (UI only).`);
-      applyFilters();
-    }
-  });
-
-  form?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    showToast("Saved", "Client saved (UI only). Connect to PHP later.");
-    document.getElementById("clientModal").classList.remove("open");
-    editingRow = null;
-    form.reset();
-  });
-
-  applyFilters();
+                const modal = document.getElementById("clientModal");
+                if (modal) modal.classList.add("open");
+            } catch (error) {
+                alert("Failed to load client details.");
+                console.error(error);
+            }
+        });
+    });
 });
+
+
