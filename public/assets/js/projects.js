@@ -1,99 +1,91 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const search = document.getElementById("projectSearch");
-  const serviceFilter = document.getElementById("serviceFilter");
-  const statusFilter = document.getElementById("statusFilter");
-  const table = document.getElementById("projectsTable");
-  const form = document.getElementById("projectForm");
+    const search = document.getElementById("projectSearch");
+    const serviceFilter = document.getElementById("serviceFilter");
+    const statusFilter = document.getElementById("statusFilter");
+    const table = document.getElementById("projectsTable");
 
-  const mName = document.getElementById("mProjectName");
-  const mClient = document.getElementById("mProjectClient");
-  const mService = document.getElementById("mProjectService");
-  const mStatus = document.getElementById("mProjectStatus");
-  const mDue = document.getElementById("mProjectDue");
+    const form = document.getElementById("projectForm");
+    const modalTitle = document.getElementById("projectModalTitle");
+    const hiddenId = document.getElementById("mProjectId");
 
-  let editingRow = null;
+    const mName = document.getElementById("mProjectName");
+    const mClient = document.getElementById("mProjectClient");
+    const mService = document.getElementById("mProjectService");
+    const mStatus = document.getElementById("mProjectStatus");
+    const mDue = document.getElementById("mProjectDue");
+    const mDescription = document.getElementById("mProjectDescription");
 
-  function statusChip(status){
-    const cls = status === "Completed" ? "good"
-      : status === "Review" ? "warn"
-      : status === "In Progress" ? "info" : "";
-    return `<span class="chip ${cls}"><span class="dot"></span>${status}</span>`;
-  }
+    function applyFilters() {
+        const q = (search?.value || "").toLowerCase().trim();
+        const svc = (serviceFilter?.value || "all").toLowerCase();
+        const st = (statusFilter?.value || "all").toLowerCase();
 
-  function serviceChip(service){
-    const cls = service === "SEO" ? "info"
-      : service === "Ads" ? "warn"
-      : service === "Social Media" ? "good" : "";
-    return `<span class="chip ${cls}"><span class="dot"></span>${service}</span>`;
-  }
+        table?.querySelectorAll("tbody tr").forEach(tr => {
+            const name = (tr.dataset.name || "").toLowerCase();
+            const service = (tr.dataset.service || "").toLowerCase();
+            const status = (tr.dataset.status || "").toLowerCase();
 
-  function applyFilters(){
-    const q = (search.value || "").toLowerCase().trim();
-    const svc = serviceFilter.value;
-    const st = statusFilter.value;
+            const okText = !q || name.includes(q);
+            const okSvc = svc === "all" || service === svc.toLowerCase();
+            const okSt = st === "all" || status === st.toLowerCase();
 
-    table.querySelectorAll("tbody tr").forEach(tr => {
-      const name = (tr.dataset.name || "").toLowerCase();
-      const okText = !q || name.includes(q);
-      const okSvc = (svc === "all") || (tr.dataset.service === svc);
-      const okSt = (st === "all") || (tr.dataset.status === st);
-      tr.style.display = (okText && okSvc && okSt) ? "" : "none";
+            tr.style.display = (okText && okSvc && okSt) ? "" : "none";
+        });
+    }
+
+    search?.addEventListener("input", applyFilters);
+    serviceFilter?.addEventListener("change", applyFilters);
+    statusFilter?.addEventListener("change", applyFilters);
+
+    function resetFormToCreateMode() {
+        if (!form) return;
+
+        form.action = "/Project-Visionary-Verse/public/project/store";
+        if (modalTitle) modalTitle.textContent = "Project Details";
+        if (hiddenId) hiddenId.value = "";
+
+        if (mName) mName.value = "";
+        if (mClient) mClient.value = "";
+        if (mService) mService.value = "SEO";
+        if (mStatus) mStatus.value = "To Do";
+        if (mDue) mDue.value = "";
+        if (mDescription) mDescription.value = "";
+    }
+
+    document.querySelectorAll('[data-open="projectModal"]').forEach(btn => {
+        btn.addEventListener("click", () => {
+            resetFormToCreateMode();
+        });
     });
-  }
 
-  search?.addEventListener("input", applyFilters);
-  serviceFilter?.addEventListener("change", applyFilters);
-  statusFilter?.addEventListener("change", applyFilters);
+    document.querySelectorAll(".btnEdit").forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const id = btn.dataset.id;
+            if (!id) return;
 
-  table.addEventListener("click", (e) => {
-    const tr = e.target.closest("tr");
-    if(!tr) return;
+            try {
+                const response = await fetch(`/Project-Visionary-Verse/public/project/edit/${id}`);
+                const project = await response.json();
 
-    if(e.target.classList.contains("btnEdit")){
-      editingRow = tr;
-      mName.value = tr.children[0].textContent.trim();
-      mClient.value = tr.children[1].textContent.trim();
-      mService.value = tr.dataset.service;
-      mStatus.value = tr.dataset.status;
-      mDue.value = tr.children[4].textContent.trim();
-      document.getElementById("projectModal").classList.add("open");
-    }
+                if (form) form.action = `/Project-Visionary-Verse/public/project/update/${id}`;
+                if (modalTitle) modalTitle.textContent = "Edit Project";
+                if (hiddenId) hiddenId.value = project.project_id || "";
 
-    if(e.target.classList.contains("btnStatus")){
-      const order = ["To Do","In Progress","Review","Completed"];
-      const idx = order.indexOf(tr.dataset.status);
-      const next = order[(idx + 1) % order.length];
-      tr.dataset.status = next;
-      tr.children[3].innerHTML = statusChip(next);
-      showToast("Project status updated", `Project moved to ${next} (UI only).`);
-      applyFilters();
-    }
-  });
+                if (mName) mName.value = project.name || "";
+                if (mClient) mClient.value = project.client_id || "";
+                if (mService) mService.value = project.service || "SEO";
+                if (mStatus) mStatus.value = project.status || "To Do";
+                if (mDue) mDue.value = project.due_date || "";
+                if (mDescription) mDescription.value = project.description || "";
 
-  form?.addEventListener("submit", (e) => {
-    e.preventDefault();
+                const modal = document.getElementById("projectModal");
+                if (modal) modal.classList.add("open");
+            } catch (error) {
+                alert("Failed to load project details.");
+                console.error(error);
+            }
+        });
+    });
 
-    if(editingRow){
-      editingRow.dataset.name = mName.value.trim();
-      editingRow.dataset.service = mService.value;
-      editingRow.dataset.status = mStatus.value;
-
-      editingRow.children[0].textContent = mName.value.trim();
-      editingRow.children[1].textContent = mClient.value.trim();
-      editingRow.children[2].innerHTML = serviceChip(mService.value);
-      editingRow.children[3].innerHTML = statusChip(mStatus.value);
-      editingRow.children[4].textContent = mDue.value;
-
-      showToast("Saved", "Project updated (UI only).");
-    } else {
-      showToast("Saved", "Project saved (UI only).");
-    }
-
-    document.getElementById("projectModal").classList.remove("open");
-    editingRow = null;
-    form.reset();
     applyFilters();
-  });
-
-  applyFilters();
 });
