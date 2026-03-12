@@ -1,0 +1,31 @@
+# PHP
+vendor/
+composer.lock
+*.log
+
+# Database
+*.sql.backup
+*.sqlite
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment
+.env
+.env.local
+config/database.local.php
+
+# Temporary files
+tmp/
+temp/
+cache/
+*.tmp
