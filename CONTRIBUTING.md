@@ -18,9 +18,11 @@ Thank you for your interest in contributing to Visionary Verse!
 
 ## Branch Strategy
 
-- `main` - Production-ready code
+- `project-manager` - Production-ready code and Project manager features
 - `startup-manager` - Startup manager features
-- `project-manager` - Project manager features
+- `quality-manager` - Quality manager features
+- `risk-manager` - Risk manager features
+- `Scheduling-manager` - Scheduling manager features
 
 ## Submitting Changes
 
