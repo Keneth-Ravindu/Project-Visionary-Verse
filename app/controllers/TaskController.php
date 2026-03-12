@@ -4,23 +4,35 @@ class TaskController extends Controller
 {
     public function index()
     {
+        $this->requireAnyRole(['admin', 'staff']);
+
         $taskModel = $this->model('Task');
+        $notificationModel = $this->model('Notification');
 
         $tasks = $taskModel->getAllTasks();
         $projects = $taskModel->getAllProjects();
         $users = $taskModel->getAllUsers();
 
+        $currentUserId = $_SESSION['user_id'] ?? 1;
+
+        $latestNotifications = $notificationModel->getUnreadNotifications($currentUserId, 5);
+        $unreadCount = $notificationModel->getUnreadCountByUser($currentUserId);
+
         $this->view('tasks/index', [
             'tasks' => $tasks,
             'projects' => $projects,
-            'users' => $users
+            'users' => $users,
+            'latestNotifications' => $latestNotifications,
+            'unreadCount' => $unreadCount
         ]);
     }
 
     public function store()
     {
+        $this->requireAnyRole(['admin', 'staff']);
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /Project-Visionary-Verse/public/task/index');
+            header('Location: /pvv/public/task/index');
             exit;
         }
 
@@ -50,12 +62,24 @@ class TaskController extends Controller
 
         $taskModel->createTask($data);
 
-        header('Location: /Project-Visionary-Verse/public/task/index');
+        $notificationModel = $this->model('Notification');
+
+        $message = 'You have been assigned to "' . $name . '"';
+
+        $notificationModel->createNotification(
+            $assignee_id,
+            'task',
+            $message
+        );
+
+        header('Location: /pvv/public/task/index');
         exit;
     }
 
     public function edit($id = null)
     {
+        $this->requireAnyRole(['admin', 'staff']);
+
         if (!$id) {
             die('Task ID is required.');
         }
@@ -74,8 +98,10 @@ class TaskController extends Controller
 
     public function update($id = null)
     {
+        $this->requireAnyRole(['admin', 'staff']);
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$id) {
-            header('Location: /Project-Visionary-Verse/public/task/index');
+            header('Location: /pvv/public/task/index');
             exit;
         }
 
@@ -105,28 +131,32 @@ class TaskController extends Controller
 
         $taskModel->updateTask($id, $data);
 
-        header('Location: /Project-Visionary-Verse/public/task/index');
+        header('Location: /pvv/public/task/index');
         exit;
     }
 
     public function delete($id = null)
     {
+        $this->requireAnyRole(['admin', 'staff']);
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$id) {
-            header('Location: /Project-Visionary-Verse/public/task/index');
+            header('Location: /pvv/public/task/index');
             exit;
         }
 
         $taskModel = $this->model('Task');
         $taskModel->deleteTask($id);
 
-        header('Location: /Project-Visionary-Verse/public/task/index');
+        header('Location: /pvv/public/task/index');
         exit;
     }
 
     public function moveStatus($id = null)
     {
+        $this->requireAnyRole(['admin', 'staff']);
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$id) {
-            header('Location: /Project-Visionary-Verse/public/task/index');
+            header('Location: /pvv/public/task/index');
             exit;
         }
 
@@ -142,10 +172,22 @@ class TaskController extends Controller
         }
 
         $taskModel = $this->model('Task');
+
+        $task = $taskModel->getTaskById($id);
+
         $taskModel->updateTaskStatus($id, $nextStatus);
 
-        header('Location: /Project-Visionary-Verse/public/task/index');
-        exit;
-    }    
+        $notificationModel = $this->model('Notification');
 
+        $message = 'Task "' . $task['name'] . '" moved to ' . $nextStatus;
+
+        $notificationModel->createNotification(
+            $task['assignee_id'],
+            'task',
+            $message
+        );
+
+        header('Location: /pvv/public/task/index');
+        exit;
+    }
 }
