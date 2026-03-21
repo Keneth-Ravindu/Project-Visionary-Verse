@@ -207,11 +207,11 @@ http://localhost/pvv/public
 
 ## 👨‍💻 Authors
 
-**Project Manager - K.K.R Poornima - 2433190**
-**Quality Manager - R.G.D Rajapaksha - 2523676**
-**Risk Manager - R.A.D.N Nivarthana - 2526224**
-**Scheduling Manager - R.A.C.K Jayalath - 2433285**
-**Startup Manager - B.A.D.R Berugoda - 2433414**
+* Project Manager - K.K.R Poornima - 2433190
+* Quality Manager - R.G.D Rajapaksha - 2523676
+* Risk Manager - R.A.D.N Nivarthana - 2526224
+* Scheduling Manager - R.A.C.K Jayalath - 2433285
+* Startup Manager - B.A.D.R Berugoda - 2433414
 
 University of Bedfordshire (SLIIT CITY UNI) Final Year Computer Science Students to fulfill Agile Project Management Module
 
