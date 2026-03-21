@@ -17,7 +17,7 @@ require_once "../app/views/partials/topnav.php";
     <div class="input-row" style="justify-content:space-between; flex-wrap:wrap">
         <div>
             <h1 class="h1">Clients</h1>
-            <p class="sub">Create, edit, and manage client status.</p>
+            <p class="sub">Manage client profiles, contacts, and activation status.</p>
         </div>
         <div class="input-row" style="flex-wrap:wrap">
             <input class="input" id="clientSearch" placeholder="Search clients..." style="width:260px" />
@@ -91,7 +91,7 @@ require_once "../app/views/partials/topnav.php";
         <div class="modal-head">
             <div>
                 <div style="font-weight:950" id="clientModalTitle">Client Details</div>
-                <div class="sub">Add or edit a client</div>
+                <div class="sub">Create or update client information</div>
             </div>
             <button class="iconbtn" data-close="clientModal">✕</button>
         </div>

@@ -4,63 +4,156 @@ class ChatbotService extends Model
 {
     public function getReply($message, $userId, $userRole, $userEmail = '')
     {
-        $text = strtolower(trim($message));
+        $text = $this->normalizeMessage($message);
 
         if ($text === '') {
-            return "Please type a question.";
+            return $this->textResponse("Please type a question.");
         }
 
-        if (strpos($text, 'my overdue tasks') !== false) {
-            return $this->getMyOverdueTasksReply($userId, $userRole);
+        $intent = $this->detectIntent($text);
+
+        switch ($intent) {
+            case 'greeting':
+                return $this->greetingResponse($userRole);
+
+            case 'my_tasks':
+                return $this->getMyTasksReply($userId, $userRole);
+
+            case 'my_overdue_tasks':
+                return $this->getMyOverdueTasksReply($userId, $userRole);
+
+            case 'overdue_tasks':
+                return $this->getOverdueTasksReply($userId, $userRole);
+
+            case 'tasks_due_today':
+                return $this->getTasksDueTodayReply($userId, $userRole);
+
+            case 'pending_approvals':
+                return $this->getPendingApprovalsReply($userId, $userRole, $userEmail);
+
+            case 'approvals_summary':
+                return $this->getApprovalsSummaryReply($userRole, $userEmail);
+
+            case 'project_risk':
+                return $this->getDelayedProjectsReply($userRole);
+
+            case 'high_priority_client':
+                return $this->getHighPriorityClientsReply($userRole);
+
+            case 'project_progress':
+                return $this->getProjectProgressReply($message, $userRole, $userEmail);
+
+            case 'project_status':
+                return $this->routeProjectStatusIntent($message, $userRole, $userEmail);
+
+            case 'clients':
+                return $this->getClientsReply($userRole);
+
+            case 'admin_summary':
+                return $this->getAdminSummaryReply($userRole);
+
+            default:
+                return $this->getHelpReply($userRole);
+        }
+    }
+
+    private function normalizeMessage($message)
+    {
+        $text = strtolower(trim($message));
+        $text = preg_replace('/[^\w\s]/', ' ', $text);
+        $text = preg_replace('/\s+/', ' ', $text);
+        return trim($text);
+    }
+
+    private function detectIntent($text)
+    {
+        if (preg_match('/\b(hi|hello|hey)\b/', $text)) {
+            return 'greeting';
         }
 
-        if (strpos($text, 'my tasks') !== false || strpos($text, 'show my tasks') !== false) {
-            return $this->getMyTasksReply($userId, $userRole);
+        if (preg_match('/\b(my overdue tasks|show my overdue tasks)\b/', $text)) {
+            return 'my_overdue_tasks';
         }
 
-        if (strpos($text, 'overdue tasks') !== false) {
-            return $this->getOverdueTasksReply($userId, $userRole);
+        if (preg_match('/\b(my tasks|show my tasks|list my tasks|assigned tasks)\b/', $text)) {
+            return 'my_tasks';
         }
 
-        if (strpos($text, 'pending approvals') !== false || strpos($text, 'approvals') !== false) {
-            return $this->getPendingApprovalsReply($userId, $userRole, $userEmail);
+        if (preg_match('/\b(overdue tasks|late tasks)\b/', $text)) {
+            return 'overdue_tasks';
         }
 
-        if (
-            strpos($text, 'delayed project') !== false ||
-            strpos($text, 'project risk') !== false ||
-            strpos($text, 'at risk') !== false
-        ) {
-            return $this->getDelayedProjectsReply($userRole);
+        if (preg_match('/\b(due today|tasks due today|what is due today|today tasks)\b/', $text)) {
+            return 'tasks_due_today';
         }
 
-        if (
-            strpos($text, 'high priority client') !== false ||
-            strpos($text, 'priority client') !== false
-        ) {
-            return $this->getHighPriorityClientsReply($userRole);
+        if (preg_match('/\b(pending approvals|approvals pending|my approvals)\b/', $text)) {
+            return 'pending_approvals';
         }
 
-        if (strpos($text, 'project status ') !== false) {
-            $projectName = trim(str_ireplace('project status', '', $message));
-            return $this->getSpecificProjectStatusReply($projectName, $userRole, $userEmail);
+        if (preg_match('/\b(approvals summary|approval summary|deliverable summary)\b/', $text)) {
+            return 'approvals_summary';
         }
 
-        if (strpos($text, 'project status') !== false || strpos($text, 'show projects') !== false) {
-            return $this->getProjectStatusReply($userRole, $userEmail);
+        if (preg_match('/\b(project risk|delayed project|delayed projects|at risk)\b/', $text)) {
+            return 'project_risk';
         }
 
-        if (strpos($text, 'show clients') !== false || strpos($text, 'clients') !== false) {
-            return $this->getClientsReply($userRole);
+        if (preg_match('/\b(high priority client|priority client|top priority client)\b/', $text)) {
+            return 'high_priority_client';
         }
 
-        return "I can help with my tasks, my overdue tasks, overdue tasks, pending approvals, project risk, high priority clients, project status, and clients.";
+        if (preg_match('/\b(project progress|progress of project|show progress)\b/', $text)) {
+            return 'project_progress';
+        }
+
+        if (preg_match('/\b(project status|show projects|show project status|status of project)\b/', $text)) {
+            return 'project_status';
+        }
+
+        if (preg_match('/\b(show clients|clients list|clients)\b/', $text)) {
+            return 'clients';
+        }
+
+        if (preg_match('/\b(system summary|admin summary|dashboard summary|overall summary)\b/', $text)) {
+            return 'admin_summary';
+        }
+
+        return 'unknown';
+    }
+
+    private function textResponse($reply, $suggestions = [])
+    {
+        return [
+            'reply' => $reply,
+            'type' => 'text',
+            'items' => [],
+            'suggestions' => $suggestions
+        ];
+    }
+
+    private function listResponse($reply, $items = [], $suggestions = [])
+    {
+        return [
+            'reply' => $reply,
+            'type' => 'list',
+            'items' => $items,
+            'suggestions' => $suggestions
+        ];
+    }
+
+    private function greetingResponse($userRole)
+    {
+        return $this->textResponse(
+            "Hello! I can help with tasks, project status, project progress, approvals, risks, and summaries.",
+            $this->getSuggestionsByRole($userRole)
+        );
     }
 
     private function getMyTasksReply($userId, $userRole)
     {
         if ($userRole === 'client') {
-            return "Clients do not have assigned internal tasks in the current system.";
+            return $this->textResponse("Clients do not have assigned internal tasks in the current system.");
         }
 
         if ($userRole === 'staff') {
@@ -85,21 +178,21 @@ class ChatbotService extends Model
         $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$tasks) {
-            return "No tasks found.";
+            return $this->textResponse("No tasks found.");
         }
 
-        $lines = [];
+        $items = [];
         foreach ($tasks as $task) {
-            $lines[] = $task['name'] . ' (' . $task['status'] . ', due ' . $task['deadline'] . ')';
+            $items[] = $task['name'] . ' | ' . $task['status'] . ' | Due: ' . $task['deadline'];
         }
 
-        return "Here are the latest tasks: " . implode("; ", $lines) . ".";
+        return $this->listResponse("Here are the latest tasks:", $items);
     }
 
     private function getMyOverdueTasksReply($userId, $userRole)
     {
         if ($userRole === 'client') {
-            return "Clients do not have internal assigned tasks.";
+            return $this->textResponse("Clients do not have internal assigned tasks.");
         }
 
         if ($userRole === 'staff') {
@@ -128,15 +221,15 @@ class ChatbotService extends Model
         $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$tasks) {
-            return "No overdue tasks found.";
+            return $this->textResponse("No overdue tasks found.");
         }
 
-        $lines = [];
+        $items = [];
         foreach ($tasks as $task) {
-            $lines[] = $task['name'] . ' (due ' . $task['deadline'] . ')';
+            $items[] = $task['name'] . ' | Due: ' . $task['deadline'];
         }
 
-        return "Overdue tasks: " . implode("; ", $lines) . ".";
+        return $this->listResponse("These tasks are overdue:", $items);
     }
 
     private function getOverdueTasksReply($userId, $userRole)
@@ -151,7 +244,7 @@ class ChatbotService extends Model
             ");
             $stmt->execute([':user_id' => $userId]);
         } elseif ($userRole === 'client') {
-            return "Clients do not have access to internal overdue task counts.";
+            return $this->textResponse("Clients do not have access to internal overdue task counts.");
         } else {
             $stmt = $this->db->prepare("
                 SELECT COUNT(*) AS total
@@ -165,7 +258,48 @@ class ChatbotService extends Model
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $count = (int)($row['total'] ?? 0);
 
-        return "There are currently {$count} overdue tasks.";
+        return $this->textResponse("There are currently {$count} overdue tasks.");
+    }
+
+    private function getTasksDueTodayReply($userId, $userRole)
+    {
+        if ($userRole === 'client') {
+            return $this->textResponse("Clients do not have access to internal task deadlines.");
+        }
+
+        if ($userRole === 'staff') {
+            $stmt = $this->db->prepare("
+                SELECT name, status
+                FROM tasks
+                WHERE assignee_id = :user_id
+                  AND deadline = CURDATE()
+                ORDER BY name ASC
+                LIMIT 10
+            ");
+            $stmt->execute([':user_id' => $userId]);
+        } else {
+            $stmt = $this->db->prepare("
+                SELECT name, status
+                FROM tasks
+                WHERE deadline = CURDATE()
+                ORDER BY name ASC
+                LIMIT 10
+            ");
+            $stmt->execute();
+        }
+
+        $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$tasks) {
+            return $this->textResponse("There are no tasks due today.");
+        }
+
+        $items = [];
+        foreach ($tasks as $task) {
+            $items[] = $task['name'] . ' | ' . $task['status'];
+        }
+
+        return $this->listResponse("Here are the tasks due today:", $items);
     }
 
     private function getPendingApprovalsReply($userId, $userRole, $userEmail)
@@ -196,21 +330,58 @@ class ChatbotService extends Model
         $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$items) {
-            return "There are no pending approvals right now.";
+            return $this->textResponse("There are no pending approvals right now.");
         }
 
         $lines = [];
         foreach ($items as $item) {
-            $lines[] = $item['name'] . ' (submitted ' . $item['submitted_at'] . ')';
+            $lines[] = $item['name'] . ' | Submitted: ' . $item['submitted_at'];
         }
 
-        return "Pending approvals: " . implode("; ", $lines) . ".";
+        return $this->listResponse("Pending approvals:", $lines);
+    }
+
+    private function getApprovalsSummaryReply($userRole, $userEmail)
+    {
+        if ($userRole === 'client') {
+            $stmt = $this->db->prepare("
+                SELECT d.status, COUNT(*) AS total
+                FROM deliverables d
+                INNER JOIN projects p ON d.project_id = p.project_id
+                INNER JOIN clients c ON p.client_id = c.client_id
+                WHERE c.email = :email
+                GROUP BY d.status
+                ORDER BY total DESC
+            ");
+            $stmt->execute([':email' => $userEmail]);
+        } else {
+            $stmt = $this->db->prepare("
+                SELECT status, COUNT(*) AS total
+                FROM deliverables
+                GROUP BY status
+                ORDER BY total DESC
+            ");
+            $stmt->execute();
+        }
+
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$rows) {
+            return $this->textResponse("No approval summary data found.");
+        }
+
+        $items = [];
+        foreach ($rows as $row) {
+            $items[] = $row['status'] . ': ' . $row['total'];
+        }
+
+        return $this->listResponse("Here is the approvals summary:", $items);
     }
 
     private function getDelayedProjectsReply($userRole)
     {
         if ($userRole !== 'admin') {
-            return "Detailed DSS risk insights are currently available to admin users only.";
+            return $this->textResponse("Detailed DSS risk insights are currently available to admin users only.");
         }
 
         $stmt = $this->db->prepare("
@@ -229,21 +400,21 @@ class ChatbotService extends Model
         $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$projects) {
-            return "No high-risk projects found right now.";
+            return $this->textResponse("No high-risk projects found right now.");
         }
 
-        $lines = [];
+        $items = [];
         foreach ($projects as $project) {
-            $lines[] = $project['name'] . ' (' . (int)$project['overdue_tasks'] . ' overdue tasks, ' . (int)$project['days_to_deadline'] . ' days left)';
+            $items[] = $project['name'] . ' | Overdue tasks: ' . (int)$project['overdue_tasks'] . ' | Days left: ' . (int)$project['days_to_deadline'];
         }
 
-        return "High-risk projects: " . implode("; ", $lines) . ".";
+        return $this->listResponse("High-risk projects:", $items);
     }
 
     private function getHighPriorityClientsReply($userRole)
     {
         if ($userRole !== 'admin') {
-            return "Client priority insights are currently available to admin users only.";
+            return $this->textResponse("Client priority insights are currently available to admin users only.");
         }
 
         $stmt = $this->db->prepare("
@@ -262,15 +433,26 @@ class ChatbotService extends Model
         $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$clients) {
-            return "No client priority data found.";
+            return $this->textResponse("No client priority data found.");
         }
 
-        $lines = [];
+        $items = [];
         foreach ($clients as $client) {
-            $lines[] = $client['client_name'] . ' (' . (int)$client['active_projects'] . ' active projects, ' . (int)$client['overdue_tasks'] . ' overdue tasks)';
+            $items[] = $client['client_name'] . ' | Active projects: ' . (int)$client['active_projects'] . ' | Overdue tasks: ' . (int)$client['overdue_tasks'];
         }
 
-        return "Top priority clients: " . implode("; ", $lines) . ".";
+        return $this->listResponse("Top priority clients:", $items);
+    }
+
+    private function routeProjectStatusIntent($message, $userRole, $userEmail)
+    {
+        $projectName = $this->extractProjectName($message, 'project status');
+
+        if ($projectName !== '') {
+            return $this->getSpecificProjectStatusReply($projectName, $userRole, $userEmail);
+        }
+
+        return $this->getProjectStatusReply($userRole, $userEmail);
     }
 
     private function getProjectStatusReply($userRole, $userEmail)
@@ -298,21 +480,21 @@ class ChatbotService extends Model
         $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$projects) {
-            return "No projects found.";
+            return $this->textResponse("No projects found.");
         }
 
-        $lines = [];
+        $items = [];
         foreach ($projects as $project) {
-            $lines[] = $project['name'] . ' (' . $project['status'] . ', due ' . $project['due_date'] . ')';
+            $items[] = $project['name'] . ' | ' . $project['status'] . ' | Due: ' . $project['due_date'];
         }
 
-        return "Current project statuses: " . implode("; ", $lines) . ".";
+        return $this->listResponse("Current project statuses:", $items);
     }
 
     private function getSpecificProjectStatusReply($projectName, $userRole, $userEmail)
     {
         if ($projectName === '') {
-            return "Please include a project name, for example: project status SEO Optimization";
+            return $this->textResponse('Please include a project name, for example: project status SEO Optimization');
         }
 
         if ($userRole === 'client') {
@@ -343,16 +525,97 @@ class ChatbotService extends Model
         $project = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$project) {
-            return "I could not find a project matching \"" . $projectName . "\".";
+            return $this->textResponse('I could not find a project matching "' . $projectName . '".');
         }
 
-        return $project['name'] . ' is currently ' . $project['status'] . ', service type ' . $project['service'] . ', due on ' . $project['due_date'] . '.';
+        return $this->textResponse(
+            $project['name'] . ' is currently ' . $project['status'] . ', service type ' . $project['service'] . ', due on ' . $project['due_date'] . '.'
+        );
+    }
+
+    private function getProjectProgressReply($message, $userRole, $userEmail)
+    {
+        $projectName = $this->extractProjectName($message, 'project progress');
+
+        if ($userRole === 'client') {
+            $sql = "
+                SELECT 
+                    p.project_id,
+                    p.name,
+                    COUNT(t.task_id) AS total_tasks,
+                    SUM(CASE WHEN t.status = 'Done' THEN 1 ELSE 0 END) AS completed_tasks
+                FROM projects p
+                INNER JOIN clients c ON p.client_id = c.client_id
+                LEFT JOIN tasks t ON p.project_id = t.project_id
+                WHERE c.email = :email
+            ";
+            $params = [':email' => $userEmail];
+        } else {
+            $sql = "
+                SELECT 
+                    p.project_id,
+                    p.name,
+                    COUNT(t.task_id) AS total_tasks,
+                    SUM(CASE WHEN t.status = 'Done' THEN 1 ELSE 0 END) AS completed_tasks
+                FROM projects p
+                LEFT JOIN tasks t ON p.project_id = t.project_id
+                WHERE 1=1
+            ";
+            $params = [];
+        }
+
+        if ($projectName !== '') {
+            $sql .= " AND p.name LIKE :project_name";
+            $params[':project_name'] = '%' . $projectName . '%';
+        }
+
+        $sql .= " GROUP BY p.project_id, p.name ORDER BY p.name ASC LIMIT 5";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$projects) {
+            return $this->textResponse("No project progress data found.");
+        }
+
+        $items = [];
+        foreach ($projects as $project) {
+            $total = (int)$project['total_tasks'];
+            $completed = (int)$project['completed_tasks'];
+            $progress = $total > 0 ? round(($completed / $total) * 100) : 0;
+
+            $items[] = $project['name'] . ' | Progress: ' . $progress . '% (' . $completed . '/' . $total . ' tasks)';
+        }
+
+        return $this->listResponse("Project progress summary:", $items);
+    }
+
+    private function getAdminSummaryReply($userRole)
+    {
+        if ($userRole !== 'admin') {
+            return $this->textResponse("This summary is currently available to admin users only.");
+        }
+
+        $projects = (int)$this->scalar("SELECT COUNT(*) FROM projects");
+        $overdueTasks = (int)$this->scalar("SELECT COUNT(*) FROM tasks WHERE deadline < CURDATE() AND status <> 'Done'");
+        $pendingApprovals = (int)$this->scalar("SELECT COUNT(*) FROM deliverables WHERE status = 'Pending'");
+        $clients = (int)$this->scalar("SELECT COUNT(*) FROM clients");
+
+        $items = [
+            'Total projects: ' . $projects,
+            'Total clients: ' . $clients,
+            'Overdue tasks: ' . $overdueTasks,
+            'Pending approvals: ' . $pendingApprovals
+        ];
+
+        return $this->listResponse("System summary:", $items);
     }
 
     private function getClientsReply($userRole)
     {
         if ($userRole !== 'admin') {
-            return "Client listing is currently available to admin users only.";
+            return $this->textResponse("Client listing is currently available to admin users only.");
         }
 
         $stmt = $this->db->prepare("
@@ -365,14 +628,72 @@ class ChatbotService extends Model
         $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (!$clients) {
-            return "No clients found.";
+            return $this->textResponse("No clients found.");
         }
 
-        $lines = [];
+        $items = [];
         foreach ($clients as $client) {
-            $lines[] = $client['name'] . ' - ' . $client['company'] . ' (' . $client['status'] . ')';
+            $items[] = $client['name'] . ' - ' . $client['company'] . ' (' . $client['status'] . ')';
         }
 
-        return "Clients: " . implode("; ", $lines) . ".";
+        return $this->listResponse("Clients:", $items);
+    }
+
+    private function getHelpReply($userRole)
+    {
+        return $this->textResponse(
+            "I can help with tasks, overdue work, project risk, project progress, approvals, project status, and summaries.",
+            $this->getSuggestionsByRole($userRole)
+        );
+    }
+
+    private function getSuggestionsByRole($role)
+    {
+        if ($role === 'admin') {
+            return [
+                'Overall system summary',
+                'Show project status',
+                'Project progress',
+                'Project risk',
+                'High priority client'
+            ];
+        }
+
+        if ($role === 'staff') {
+            return [
+                'Show my tasks',
+                'Show my overdue tasks',
+                'What is due today?',
+                'Project progress',
+                'Project status'
+            ];
+        }
+
+        return [
+            'Project status',
+            'Project progress',
+            'Pending approvals',
+            'Approvals summary'
+        ];
+    }
+
+    private function extractProjectName($message, $prefix)
+    {
+        $message = trim($message);
+        $lower = strtolower($message);
+        $prefixLower = strtolower($prefix);
+
+        if (strpos($lower, $prefixLower) === 0) {
+            return trim(substr($message, strlen($prefix)));
+        }
+
+        return '';
+    }
+
+    private function scalar($sql)
+    {
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchColumn();
     }
 }

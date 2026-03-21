@@ -16,7 +16,7 @@ require_once "../app/views/partials/topnav.php";
   <div class="input-row" style="justify-content:space-between; flex-wrap:wrap">
     <div>
       <h1 class="h1">Tasks</h1>
-      <p class="sub">Create tasks under projects, assign members, set priority and deadlines.</p>
+      <p class="sub">Track assignments, priorities, statuses, and deadlines in one place.</p>
     </div>
 
     <div class="input-row" style="flex-wrap:wrap">
@@ -118,8 +118,8 @@ require_once "../app/views/partials/topnav.php";
   </div>
 
   <div class="callout info" style="margin-top:14px">
-    <strong>Real-time Notification</strong>
-    <p>When a task moves status later, we will connect it to notifications using PHP + AJAX polling.</p>
+    <strong>Status Workflow</strong>
+    <p>Use Move Status to keep project execution and approvals updated.</p>
   </div>
 
   <div class="footer">© Visionary Verse — Tasks</div>
@@ -130,7 +130,7 @@ require_once "../app/views/partials/topnav.php";
     <div class="modal-head">
       <div>
         <div style="font-weight:950" id="taskModalTitle">Task Details</div>
-        <div class="sub">Add or edit a task</div>
+        <div class="sub">Create or update task details</div>
       </div>
       <button class="iconbtn" data-close="taskModal">✕</button>
     </div>

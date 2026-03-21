@@ -13,8 +13,8 @@ require_once "../app/views/partials/topnav.php";
 ?>
 
 <div class="wrap page">
-  <h1 class="h1">Decision Support System (DSS)</h1>
-  <p class="sub">Project Delay Risk Indicator + Client Priority Score using live system data.</p>
+  <h1 class="h1">Decision Support</h1>
+  <p class="sub">Monitor delivery risk and client priority using live project data.</p>
 
   <div class="grid grid-2">
     <div class="card">

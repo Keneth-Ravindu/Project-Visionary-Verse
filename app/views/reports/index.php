@@ -26,7 +26,7 @@ require_once "../app/views/partials/topnav.php";
   <div class="input-row" style="justify-content:space-between; flex-wrap:wrap">
     <div>
       <h1 class="h1">Advanced Reports</h1>
-      <p class="sub">Project progress, task completion, deliverable approvals, and team workload.</p>
+      <p class="sub">Analyze project delivery, approvals, and team workload performance.</p>
     </div>
 
         <div class="input-row" style="flex-wrap:wrap">

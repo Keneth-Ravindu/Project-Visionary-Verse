@@ -15,8 +15,8 @@ require_once "../app/views/partials/topnav.php";
 <div class="wrap page">
   <div class="input-row" style="justify-content:space-between; flex-wrap:wrap">
     <div>
-      <h1 class="h1">Client Approval Module</h1>
-      <p class="sub">Upload deliverables and get client approval or change requests.</p>
+      <h1 class="h1">Approvals</h1>
+      <p class="sub">Review deliverables, approve work, or request revisions.</p>
     </div>
 
     <div class="input-row" style="flex-wrap:wrap">
@@ -27,7 +27,9 @@ require_once "../app/views/partials/topnav.php";
         <option value="Approved">Approved</option>
         <option value="Changes Requested">Changes Requested</option>
       </select>
-      <button class="btn" data-open="deliverableModal">+ Upload Deliverable</button>
+      <?php if (($_SESSION['user_role'] ?? '') !== 'client'): ?>
+        <button class="btn" data-open="deliverableModal">+ Upload Deliverable</button>
+      <?php endif; ?>
     </div>
   </div>
 
@@ -63,22 +65,29 @@ require_once "../app/views/partials/topnav.php";
                 <span class="chip <?= $statusClass ?>"><span class="dot"></span><?= htmlspecialchars($status) ?></span>
               </td>
               <td><?= htmlspecialchars($d['submitted_at']) ?></td>
-            <td class="actions">
-            <button class="btn btn-outline btnView" data-id="<?= $d['deliverable_id'] ?>">View</button>
+              <td class="actions">
+                <button class="btn btn-outline btnView" data-id="<?= $d['deliverable_id'] ?>">View</button>
 
-            <?php if ($d['status'] !== 'Approved'): ?>
-                <form method="POST" action="/pvv/public/approval/approve/<?= $d['deliverable_id'] ?>" style="display:inline;">
-                <button class="btn btn-ghost" type="submit">Approve</button>
-                </form>
-            <?php endif; ?>
+                <?php if (($_SESSION['user_role'] ?? '') !== 'client'): ?>
+                  <?php if ($d['status'] !== 'Approved'): ?>
+                    <form method="POST" action="/pvv/public/approval/approve/<?= $d['deliverable_id'] ?>" style="display:inline;">
+                      <button class="btn btn-ghost" type="submit">Approve</button>
+                    </form>
+                  <?php endif; ?>
 
-            <?php if ($d['status'] !== 'Changes Requested'): ?>
-                <form method="POST" action="/pvv/public/approval/changes/<?= $d['deliverable_id'] ?>" style="display:inline;" onsubmit="return confirm('Mark this deliverable as Changes Requested?');">
-                <input type="hidden" name="feedback" value="Changes requested by client.">
-                <button class="btn btn-ghost" type="submit">Request Changes</button>
-                </form>
-            <?php endif; ?>
-            </td>
+                  <?php if ($d['status'] !== 'Changes Requested'): ?>
+                    <form method="POST"
+                          action="/pvv/public/approval/changes/<?= $d['deliverable_id'] ?>"
+                          style="display:inline;"
+                          onsubmit="return confirm('Mark this deliverable as Changes Requested?');">
+                      <input type="hidden" name="feedback" value="Changes requested by client.">
+                      <button class="btn btn-ghost" type="submit">Request Changes</button>
+                    </form>
+                  <?php endif; ?>
+                <?php else: ?>
+                  <span class="sub">Review only</span>
+                <?php endif; ?>
+              </td>
             </tr>
           <?php endforeach; ?>
         <?php else: ?>
@@ -93,6 +102,7 @@ require_once "../app/views/partials/topnav.php";
   <div class="footer">© Visionary Verse — Approvals</div>
 </div>
 
+<?php if (($_SESSION['user_role'] ?? '') !== 'client'): ?>
 <div class="modal" id="deliverableModal">
   <div class="modal-card">
     <div class="modal-head">
@@ -141,20 +151,21 @@ require_once "../app/views/partials/topnav.php";
     </div>
   </div>
 </div>
+<?php endif; ?>
 
 <div class="modal" id="viewDeliverableModal">
   <div class="modal-card">
     <div class="modal-head">
       <div>
         <div style="font-weight:950" id="viewTitle">Deliverable</div>
-        <div class="sub" id="viewSub">Preview</div>
+        <div class="sub" id="viewSub">Details</div>
       </div>
       <button class="iconbtn" data-close="viewDeliverableModal">✕</button>
     </div>
     <div class="modal-body">
       <div class="callout info">
         <strong>Deliverable Info</strong>
-        <p id="viewInfo">Later this can show a real file preview or download link.</p>
+        <p id="viewInfo">Deliverable metadata and approval context.</p>
       </div>
       <div class="form-actions">
         <button class="btn btn-outline" type="button" data-close="viewDeliverableModal">Close</button>

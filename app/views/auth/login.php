@@ -4,56 +4,72 @@ require_once "../app/views/layouts/header.php";
 ?>
 
 <div class="auth">
-    <div class="auth-card">
-        <div class="auth-head">
+    <div class="auth-split">
+        <div class="auth-left">
             <div class="brand">
-                <img class="brand-logo-img" src="/pvv/public/assets/img/logo.png" alt="Visionary Verse logo" />
+                <img class="brand-logo-img" src="<?= base_url('assets/img/logo.png') ?>" alt="Visionary Verse logo" />
                 <div class="brand-text">
                     <div class="brand-name">Visionary Verse</div>
-                    <div class="brand-sub">Agency Management System</div>
                 </div>
             </div>
-            <p class="sub">Login to continue.</p>
+
+            <h1 class="auth-left-title">Visionary Verse Web Application Management System</h1>
+            <p class="auth-left-sub"> “Manage Smarter. Build the Future.”</p>
+
+            <div class="auth-quote">
+                <p>“The platform made to manage our projects much easier. Everything is organized and easy to track.”</p>
+            </div>
         </div>
 
-        <div class="auth-body">
-            <?php if (!empty($error ?? '')): ?>
-                <div class="callout danger" style="margin-bottom:14px;">
-                    <?= htmlspecialchars($error) ?>
-                </div>
-            <?php endif; ?>
+        <div class="auth-right">
+            <div class="auth-form-wrap">
+                <h1 class="h1" style="font-size:1.9rem;">Welcome back</h1>
+                <p class="sub">Please enter your details to sign in.</p>
 
-            <form id="loginForm" method="POST" action="/pvv/public/auth/login">
-                <div>
-                    <label style="font-weight:950">Email</label>
-                    <input
-                        class="input"
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="you@example.com"
-                        required
-                    />
-                </div>
+                <?php if (!empty($error ?? '')): ?>
+                    <div class="callout danger" style="margin:18px 0 14px;">
+                        <?= htmlspecialchars($error) ?>
+                    </div>
+                <?php endif; ?>
 
-                <div style="margin-top:10px">
-                    <label style="font-weight:950">Password</label>
-                    <input
-                        class="input"
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder="••••••••"
-                        required
-                    />
-                </div>
+                <form id="loginForm" method="POST" action="<?= base_url('auth/login') ?>" style="margin-top:18px;">
+                    <div>
+                        <label style="font-weight:700">Email address <span style="color:#f43f5e">*</span></label>
+                        <input
+                            class="input"
+                            id="email"
+                            name="email"
+                            type="email"
+                            placeholder="name@agency.com"
+                            required
+                            style="margin-top:8px"
+                        />
+                    </div>
 
-                <div class="input-row" style="margin-top:14px">
-                    <button class="btn" type="submit" style="flex:1">Login</button>
-                </div>
+                    <div style="margin-top:16px">
+                        <label style="font-weight:700">Password <span style="color:#f43f5e">*</span></label>
+                        <div class="password-wrap" style="margin-top:8px;">
+                            <input
+                                class="input"
+                                id="password"
+                                name="password"
+                                type="password"
+                                placeholder="••••••••"
+                                required
+                            />
+                            <span class="pass-eye">◉</span>
+                        </div>
+                    </div>
 
-                <div class="footer">Secure login with role-based redirect.</div>
-            </form>
+                    <div class="auth-aux">
+                        <a href="#" onclick="return false;">Forgot password?</a>
+                    </div>
+
+                    <div class="input-row" style="margin-top:18px">
+                        <button class="btn" type="submit" style="flex:1; height:44px;">Sign in</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

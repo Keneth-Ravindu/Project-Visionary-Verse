@@ -7,12 +7,18 @@ $roleLabel = $roleLabel ?? ucfirst($userRole);
 
 <div class="topnav">
   <div class="topbar">
-    <div class="brand">
-      <button class="iconbtn" id="openDrawer">☰</button>
-      <img class="brand-logo-img" src="/pvv/public/assets/img/logo.png" alt="Visionary Verse logo" />
-      <div class="brand-text">
-        <div class="brand-name">Visionary Verse</div>
-        <div class="brand-sub"><?= htmlspecialchars($pageTitle) ?></div>
+    <div class="topbar-left">
+      <div class="brand">
+        <button class="iconbtn" id="openDrawer">☰</button>
+        <img class="brand-logo-img" src="<?= base_url('assets/img/logo.png') ?>" alt="Visionary Verse logo" />
+        <div class="brand-text">
+          <div class="brand-name">Visionary Verse</div>
+        </div>
+      </div>
+
+      <div class="topbar-page">
+        <div class="topbar-page-title"><?= htmlspecialchars($pageTitle) ?></div>
+        <div class="topbar-page-sub">Track ongoing and upcoming activities</div>
       </div>
     </div>
 
@@ -37,7 +43,7 @@ $roleLabel = $roleLabel ?? ucfirst($userRole);
             <?php endforeach; ?>
 
             <div class="item" style="text-align:center;">
-              <a href="/pvv/public/notification/index">View all notifications</a>
+              <a href="<?= base_url('notification/index') ?>">View all notifications</a>
             </div>
           <?php else: ?>
             <div class="item">
@@ -48,35 +54,35 @@ $roleLabel = $roleLabel ?? ucfirst($userRole);
         </div>
       </div>
 
-      <a class="btn btn-outline" href="/pvv/public/auth/logout">Logout</a>
+      <a class="btn btn-outline" href="<?= base_url('auth/logout') ?>">Logout</a>
     </div>
   </div>
 
   <div class="tabs">
     <?php if ($userRole === 'admin'): ?>
-      <a class="tab <?= $activeTab === 'dashboard' ? 'active' : '' ?>" href="/pvv/public/dashboard/admin">Dashboard</a>
-      <a class="tab <?= $activeTab === 'clients' ? 'active' : '' ?>" href="/pvv/public/client/index">Clients</a>
-      <a class="tab <?= $activeTab === 'projects' ? 'active' : '' ?>" href="/pvv/public/project/index">Projects</a>
-      <a class="tab <?= $activeTab === 'tasks' ? 'active' : '' ?>" href="/pvv/public/task/index">Tasks</a>
-      <a class="tab <?= $activeTab === 'approvals' ? 'active' : '' ?>" href="/pvv/public/approval/index">Approvals</a>
-      <a class="tab <?= $activeTab === 'reports' ? 'active' : '' ?>" href="/pvv/public/report/index">Reports</a>
-      <a class="tab <?= $activeTab === 'dss' ? 'active' : '' ?>" href="/pvv/public/dss/index">DSS</a>
-      <a class="tab <?= $activeTab === 'notifications' ? 'active' : '' ?>" href="/pvv/public/notification/index">Notifications</a>
-      <a class="tab <?= $activeTab === 'chatbot' ? 'active' : '' ?>" href="/pvv/public/chatbot/index">Chatbot</a>
+      <a class="tab <?= $activeTab === 'dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard/admin') ?>">Dashboard</a>
+      <a class="tab <?= $activeTab === 'clients' ? 'active' : '' ?>" href="<?= base_url('client/index') ?>">Clients</a>
+      <a class="tab <?= $activeTab === 'projects' ? 'active' : '' ?>" href="<?= base_url('project/index') ?>">Projects</a>
+      <a class="tab <?= $activeTab === 'tasks' ? 'active' : '' ?>" href="<?= base_url('task/index') ?>">Tasks</a>
+      <a class="tab <?= $activeTab === 'approvals' ? 'active' : '' ?>" href="<?= base_url('approval/index') ?>">Approvals</a>
+      <a class="tab <?= $activeTab === 'reports' ? 'active' : '' ?>" href="<?= base_url('report/index') ?>">Reports</a>
+      <a class="tab <?= $activeTab === 'dss' ? 'active' : '' ?>" href="<?= base_url('dss/index') ?>">DSS</a>
+      <a class="tab <?= $activeTab === 'notifications' ? 'active' : '' ?>" href="<?= base_url('notification/index') ?>">Notifications</a>
+      <a class="tab <?= $activeTab === 'chatbot' ? 'active' : '' ?>" href="<?= base_url('chatbot/index') ?>">Chatbot</a>
 
     <?php elseif ($userRole === 'staff'): ?>
-      <a class="tab <?= $activeTab === 'dashboard' ? 'active' : '' ?>" href="/pvv/public/dashboard/staff">Dashboard</a>
-      <a class="tab <?= $activeTab === 'tasks' ? 'active' : '' ?>" href="/pvv/public/task/index">Tasks</a>
-      <a class="tab <?= $activeTab === 'approvals' ? 'active' : '' ?>" href="/pvv/public/approval/index">Approvals</a>
-      <a class="tab <?= $activeTab === 'notifications' ? 'active' : '' ?>" href="/pvv/public/notification/index">Notifications</a>
-      <a class="tab <?= $activeTab === 'chatbot' ? 'active' : '' ?>" href="/pvv/public/chatbot/index">Chatbot</a>
+      <a class="tab <?= $activeTab === 'dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard/staff') ?>">Dashboard</a>
+      <a class="tab <?= $activeTab === 'tasks' ? 'active' : '' ?>" href="<?= base_url('task/index') ?>">Tasks</a>
+      <a class="tab <?= $activeTab === 'approvals' ? 'active' : '' ?>" href="<?= base_url('approval/index') ?>">Approvals</a>
+      <a class="tab <?= $activeTab === 'notifications' ? 'active' : '' ?>" href="<?= base_url('notification/index') ?>">Notifications</a>
+      <a class="tab <?= $activeTab === 'chatbot' ? 'active' : '' ?>" href="<?= base_url('chatbot/index') ?>">Chatbot</a>
 
     <?php elseif ($userRole === 'client'): ?>
-      <a class="tab <?= $activeTab === 'dashboard' ? 'active' : '' ?>" href="/pvv/public/dashboard/client">Dashboard</a>
-      <a class="tab <?= $activeTab === 'projects' ? 'active' : '' ?>" href="/pvv/public/project/index">Projects</a>
-      <a class="tab <?= $activeTab === 'approvals' ? 'active' : '' ?>" href="/pvv/public/approval/index">Approvals</a>
-      <a class="tab <?= $activeTab === 'notifications' ? 'active' : '' ?>" href="/pvv/public/notification/index">Notifications</a>
-      <a class="tab <?= $activeTab === 'chatbot' ? 'active' : '' ?>" href="/pvv/public/chatbot/index">Chatbot</a>
+      <a class="tab <?= $activeTab === 'dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard/client') ?>">Dashboard</a>
+      <a class="tab <?= $activeTab === 'projects' ? 'active' : '' ?>" href="<?= base_url('project/index') ?>">Projects</a>
+      <a class="tab <?= $activeTab === 'approvals' ? 'active' : '' ?>" href="<?= base_url('approval/index') ?>">Approvals</a>
+      <a class="tab <?= $activeTab === 'notifications' ? 'active' : '' ?>" href="<?= base_url('notification/index') ?>">Notifications</a>
+      <a class="tab <?= $activeTab === 'chatbot' ? 'active' : '' ?>" href="<?= base_url('chatbot/index') ?>">Chatbot</a>
     <?php endif; ?>
   </div>
 </div>
@@ -85,7 +91,7 @@ $roleLabel = $roleLabel ?? ucfirst($userRole);
   <div class="drawer-panel">
     <div class="input-row" style="justify-content:space-between">
       <div class="brand">
-        <img class="brand-logo-img" src="/pvv/public/assets/img/logo.png" alt="Visionary Verse logo" />
+        <img class="brand-logo-img" src="<?= base_url('assets/img/logo.png') ?>" alt="Visionary Verse logo" />
         <div>
           <div class="brand-name">Visionary Verse</div>
           <div class="brand-sub">Menu</div>
@@ -95,26 +101,29 @@ $roleLabel = $roleLabel ?? ucfirst($userRole);
     </div>
 
     <?php if ($userRole === 'admin'): ?>
-      <a class="tab <?= $activeTab === 'dashboard' ? 'active' : '' ?>" href="/pvv/public/dashboard/admin">Dashboard</a>
-      <a class="tab <?= $activeTab === 'clients' ? 'active' : '' ?>" href="/pvv/public/client/index">Clients</a>
-      <a class="tab <?= $activeTab === 'projects' ? 'active' : '' ?>" href="/pvv/public/project/index">Projects</a>
-      <a class="tab <?= $activeTab === 'tasks' ? 'active' : '' ?>" href="/pvv/public/task/index">Tasks</a>
-      <a class="tab <?= $activeTab === 'approvals' ? 'active' : '' ?>" href="/pvv/public/approval/index">Approvals</a>
-      <a class="tab <?= $activeTab === 'reports' ? 'active' : '' ?>" href="/pvv/public/report/index">Reports</a>
-      <a class="tab <?= $activeTab === 'dss' ? 'active' : '' ?>" href="/pvv/public/dss/index">DSS</a>
-      <a class="tab <?= $activeTab === 'notifications' ? 'active' : '' ?>" href="/pvv/public/notification/index">Notifications</a>
+      <a class="tab <?= $activeTab === 'dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard/admin') ?>">Dashboard</a>
+      <a class="tab <?= $activeTab === 'clients' ? 'active' : '' ?>" href="<?= base_url('client/index') ?>">Clients</a>
+      <a class="tab <?= $activeTab === 'projects' ? 'active' : '' ?>" href="<?= base_url('project/index') ?>">Projects</a>
+      <a class="tab <?= $activeTab === 'tasks' ? 'active' : '' ?>" href="<?= base_url('task/index') ?>">Tasks</a>
+      <a class="tab <?= $activeTab === 'approvals' ? 'active' : '' ?>" href="<?= base_url('approval/index') ?>">Approvals</a>
+      <a class="tab <?= $activeTab === 'reports' ? 'active' : '' ?>" href="<?= base_url('report/index') ?>">Reports</a>
+      <a class="tab <?= $activeTab === 'dss' ? 'active' : '' ?>" href="<?= base_url('dss/index') ?>">DSS</a>
+      <a class="tab <?= $activeTab === 'notifications' ? 'active' : '' ?>" href="<?= base_url('notification/index') ?>">Notifications</a>
+      <a class="tab <?= $activeTab === 'chatbot' ? 'active' : '' ?>" href="<?= base_url('chatbot/index') ?>">Chatbot</a>
 
     <?php elseif ($userRole === 'staff'): ?>
-      <a class="tab <?= $activeTab === 'dashboard' ? 'active' : '' ?>" href="/pvv/public/dashboard/staff">Dashboard</a>
-      <a class="tab <?= $activeTab === 'tasks' ? 'active' : '' ?>" href="/pvv/public/task/index">Tasks</a>
-      <a class="tab <?= $activeTab === 'approvals' ? 'active' : '' ?>" href="/pvv/public/approval/index">Approvals</a>
-      <a class="tab <?= $activeTab === 'notifications' ? 'active' : '' ?>" href="/pvv/public/notification/index">Notifications</a>
+      <a class="tab <?= $activeTab === 'dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard/staff') ?>">Dashboard</a>
+      <a class="tab <?= $activeTab === 'tasks' ? 'active' : '' ?>" href="<?= base_url('task/index') ?>">Tasks</a>
+      <a class="tab <?= $activeTab === 'approvals' ? 'active' : '' ?>" href="<?= base_url('approval/index') ?>">Approvals</a>
+      <a class="tab <?= $activeTab === 'notifications' ? 'active' : '' ?>" href="<?= base_url('notification/index') ?>">Notifications</a>
+      <a class="tab <?= $activeTab === 'chatbot' ? 'active' : '' ?>" href="<?= base_url('chatbot/index') ?>">Chatbot</a>
 
     <?php elseif ($userRole === 'client'): ?>
-      <a class="tab <?= $activeTab === 'dashboard' ? 'active' : '' ?>" href="/pvv/public/dashboard/client">Dashboard</a>
-      <a class="tab <?= $activeTab === 'projects' ? 'active' : '' ?>" href="/pvv/public/project/index">Projects</a>
-      <a class="tab <?= $activeTab === 'approvals' ? 'active' : '' ?>" href="/pvv/public/approval/index">Approvals</a>
-      <a class="tab <?= $activeTab === 'notifications' ? 'active' : '' ?>" href="/pvv/public/notification/index">Notifications</a>
+      <a class="tab <?= $activeTab === 'dashboard' ? 'active' : '' ?>" href="<?= base_url('dashboard/client') ?>">Dashboard</a>
+      <a class="tab <?= $activeTab === 'projects' ? 'active' : '' ?>" href="<?= base_url('project/index') ?>">Projects</a>
+      <a class="tab <?= $activeTab === 'approvals' ? 'active' : '' ?>" href="<?= base_url('approval/index') ?>">Approvals</a>
+      <a class="tab <?= $activeTab === 'notifications' ? 'active' : '' ?>" href="<?= base_url('notification/index') ?>">Notifications</a>
+      <a class="tab <?= $activeTab === 'chatbot' ? 'active' : '' ?>" href="<?= base_url('chatbot/index') ?>">Chatbot</a>
     <?php endif; ?>
   </div>
 </div>

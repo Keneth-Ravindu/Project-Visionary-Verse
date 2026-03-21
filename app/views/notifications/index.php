@@ -21,7 +21,7 @@ require_once "../app/views/partials/topnav.php";
   <div class="input-row" style="justify-content:space-between; flex-wrap:wrap">
     <div>
       <h1 class="h1">Notifications</h1>
-      <p class="sub">Workflow notifications from tasks, approvals, and DSS.</p>
+      <p class="sub">Stay updated on task changes, approvals, and DSS alerts.</p>
     </div>
 
     <div class="input-row" style="flex-wrap:wrap">
@@ -92,8 +92,8 @@ require_once "../app/views/partials/topnav.php";
   </div>
 
   <div class="callout info" style="margin-top:14px">
-    <strong>Next upgrade</strong>
-    <p>Later we can add AJAX polling to refresh unread notifications automatically every few seconds.</p>
+    <strong>Notification Center</strong>
+    <p>Filter by type and clear unread items to keep your queue focused.</p>
   </div>
 
   <div class="footer">© Visionary Verse — Notifications</div>
