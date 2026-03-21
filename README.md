@@ -116,18 +116,20 @@ db/
 git clone https://github.com/your-username/visionary-verse.git
 ```
 
-### 2. Move to WAMP directory
+### 2. Rename the root file name to pvv instead project-visionary-verse
+
+### 3. Move to WAMP directory
 
 ```
 C:\wamp64\www\
 ```
 
-### 3. Import database
+### 4. Import database
 
 * Open **phpMyAdmin**
 * Import SQL file from `/db/`
 
-### 4. Configure database
+### 5. Configure database
 
 Update:
 
@@ -135,7 +137,7 @@ Update:
 config/config.php
 ```
 
-### 5. Run project
+### 6. Run project
 
 ```
 http://localhost/pvv/public
@@ -170,7 +172,7 @@ http://localhost/pvv/public
 * ✔ Full-stack MVC implementation
 * ✔ Role-based access control
 * ✔ DSS integration
-* ✔ AI chatbot system
+* ✔ Chatbot system
 * ✔ Real-time notifications
 * ✔ Clean modular architecture
 
@@ -187,8 +189,13 @@ http://localhost/pvv/public
 
 ## 👨‍💻 Author
 
-**Ken**
-Final Year Computer Science Student
+**Project Manager - K.K.R Poornima - 2433190**
+**Quality Manager - R.G.D Rajapaksha - 2523676**
+**Risk Manager - R.A.D.N Nivarthana - 2526224**
+**Scheduling Manager - R.A.C.K Jayalath - 2433285**
+**Startup Manager - B.A.D.R Berugoda - 2433414**
+
+Final Year Computer Science Students to fulfill Agile Project Management Module
 
 ---
 
