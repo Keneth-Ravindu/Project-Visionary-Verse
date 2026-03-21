@@ -85,6 +85,28 @@ document.addEventListener("DOMContentLoaded", () => {
     clearTimeout(window.__toastT);
     window.__toastT = setTimeout(() => toast.classList.remove("show"), 2600);
   };
+
+  // Auto status chips (project-wide)
+  const normalize = (value) => (value || "").toLowerCase().replace(/[^a-z]/g, "");
+
+  document.querySelectorAll(".chip").forEach((chip) => {
+    const label = normalize(chip.textContent);
+    if (!label) return;
+
+    const statuses = [
+      "todo", "new", "open", "inprogress", "review", "pending", "done", "completed", "approved",
+      "rejected", "read", "unread", "active", "inactive", "high", "medium", "low", "overdue",
+      "failed", "blocked", "live"
+    ];
+
+    const matched = statuses.find((status) => label.includes(status));
+    if (!matched) return;
+
+    chip.classList.add(`status-${matched}`);
+    if (matched === "inprogress") {
+      chip.classList.add("status-progress");
+    }
+  });
 });
 
 // Notifications auto-refresh every 10s (JS polling)

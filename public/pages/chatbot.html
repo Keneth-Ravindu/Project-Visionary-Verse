@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chatbot</title>
+  <link rel="stylesheet" href="../assets/css/theme.css" />
+  <link rel="icon" type="image/png" href="../assets/img/logo.png" />
+  <script defer src="../assets/js/app.js"></script>
+  <script defer src="../assets/js/chatbot.js"></script>
+</head>
+<body>
+  <div class="topnav">
+    <div class="topbar">
+      <div class="brand">
+        <button class="iconbtn" id="openDrawer">☰</button>
+        <img class="brand-logo-img" src="../assets/img/logo.png" alt="Visionary Verse logo" />
+        <div class="brand-text">
+          <div class="brand-name">Visionary Verse</div>
+          <div class="brand-sub">Support Chatbot</div>
+        </div>
+      </div>
+
+      <div class="right">
+        <span class="role-pill">All Roles</span>
+        <div class="dropdown">
+          <button class="iconbtn" id="notifBtn">🔔 <span class="badge">1</span></button>
+          <div class="menu" id="notifMenu">
+            <div class="item"><b>Tip</b><small>Try asking about project status</small></div>
+          </div>
+        </div>
+        <button class="btn btn-outline" onclick="location.href='./auth-login.html'">Logout</button>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <a class="tab" href="./dashboard-admin.html">Dashboard</a>
+      <a class="tab" href="./clients.html">Clients</a>
+      <a class="tab" href="./projects.html">Projects</a>
+      <a class="tab" href="./tasks.html">Tasks</a>
+      <a class="tab" href="./approvals.html">Approvals</a>
+      <a class="tab" href="./reports.html">Reports</a>
+      <a class="tab" href="./dss.html">DSS</a>
+      <a class="tab" href="./notifications.html">Notifications</a>
+      <a class="tab active" href="./chatbot.html">Chatbot</a>
+    </div>
+  </div>
+
+  <div class="drawer" id="drawer">
+    <div class="drawer-panel">
+      <div class="input-row" style="justify-content:space-between">
+        <div class="brand">
+          <img class="brand-logo-img" src="../assets/img/logo.png" alt="Visionary Verse logo" />
+          <div><div class="brand-name">Visionary Verse</div><div class="brand-sub">Menu</div></div>
+        </div>
+        <button class="iconbtn" id="closeDrawer">✕</button>
+      </div>
+
+      <a class="tab" href="./dashboard-admin.html">Dashboard</a>
+      <a class="tab" href="./clients.html">Clients</a>
+      <a class="tab" href="./projects.html">Projects</a>
+      <a class="tab" href="./tasks.html">Tasks</a>
+      <a class="tab" href="./approvals.html">Approvals</a>
+      <a class="tab" href="./reports.html">Reports</a>
+      <a class="tab" href="./dss.html">DSS</a>
+      <a class="tab" href="./notifications.html">Notifications</a>
+      <a class="tab active" href="./chatbot.html">Chatbot</a>
+    </div>
+  </div>
+
+  <div class="wrap page">
+    <h1 class="h1">Chatbot</h1>
+    <p class="sub">Ask quick questions about features (UI-only demo).</p>
+
+    <div class="card">
+      <div class="chat-box" id="chatBox">
+        <div class="msg bot">Hi! I’m the Visionary Verse assistant. Ask me about clients, projects, tasks, approvals, or reports.</div>
+      </div>
+
+      <div class="input-row" style="margin-top:12px; flex-wrap:wrap">
+        <input class="input" id="chatInput" placeholder="Type your message..." />
+        <button class="btn" id="sendBtn">Send</button>
+        <button class="btn btn-outline" id="quickHelp">Quick Help</button>
+      </div>
+    </div>
+
+    <div class="callout info" style="margin-top:14px">
+      <strong>Backend idea</strong>
+      <p>Store keywords in MySQL and use PHP endpoints like `/chatbot/respond` to return answers.</p>
+    </div>
+
+    <div class="footer">© Visionary Verse — Chatbot</div>
+  </div>
+
+  <div class="toast" id="toast"><strong></strong><p></p></div>
+</body>
+</html>
