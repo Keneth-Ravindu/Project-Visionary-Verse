@@ -4,73 +4,19 @@ $pageScript = 'tasks.js';
 require_once "../app/views/layouts/header.php";
 ?>
 
-<div class="topnav">
-  <div class="topbar">
-    <div class="brand">
-      <button class="iconbtn" id="openDrawer">☰</button>
-      <img class="brand-logo-img" src="/Project-Visionary-Verse/public/assets/img/logo.png" alt="Visionary Verse logo" />
-      <div class="brand-text">
-        <div class="brand-name">Visionary Verse</div>
-        <div class="brand-sub">Tasks</div>
-      </div>
-    </div>
-
-    <div class="right">
-      <span class="role-pill">Admin / Staff</span>
-      <div class="dropdown">
-        <button class="iconbtn" id="notifBtn">🔔 <span class="badge">2</span></button>
-        <div class="menu" id="notifMenu">
-          <div class="item"><b>Task assigned</b><small>Keyword Research</small></div>
-          <div class="item"><b>Status changed</b><small>To Do → Review</small></div>
-        </div>
-      </div>
-      <button class="btn btn-outline" onclick="location.href='/Project-Visionary-Verse/public/auth/login'">Logout</button>
-    </div>
-  </div>
-
-  <div class="tabs">
-    <a class="tab" href="/Project-Visionary-Verse/public/dashboard/admin">Dashboard</a>
-    <a class="tab" href="/Project-Visionary-Verse/public/client/index">Clients</a>
-    <a class="tab" href="/Project-Visionary-Verse/public/project/index">Projects</a>
-    <a class="tab active" href="/Project-Visionary-Verse/public/task/index">Tasks</a>
-    <a class="tab" href="/Project-Visionary-Verse/public/approval/index">Approvals</a>
-    <a class="tab" href="/Project-Visionary-Verse/public/report/index">Reports</a>
-    <a class="tab" href="/Project-Visionary-Verse/public/dss/index">DSS</a>
-    <a class="tab" href="/Project-Visionary-Verse/public/notification/index">Notifications</a>
-    <a class="tab" href="/Project-Visionary-Verse/public/chatbot/index">Chatbot</a>
-  </div>
-</div>
-
-<div class="drawer" id="drawer">
-  <div class="drawer-panel">
-    <div class="input-row" style="justify-content:space-between">
-      <div class="brand">
-        <img class="brand-logo-img" src="/Project-Visionary-Verse/public/assets/img/logo.png" alt="Visionary Verse logo" />
-        <div>
-          <div class="brand-name">Visionary Verse</div>
-          <div class="brand-sub">Menu</div>
-        </div>
-      </div>
-      <button class="iconbtn" id="closeDrawer">✕</button>
-    </div>
-
-    <a class="tab" href="/Project-Visionary-Verse/public/dashboard/admin">Dashboard</a>
-    <a class="tab" href="/Project-Visionary-Verse/public/client/index">Clients</a>
-    <a class="tab" href="/Project-Visionary-Verse/public/project/index">Projects</a>
-    <a class="tab active" href="/Project-Visionary-Verse/public/task/index">Tasks</a>
-    <a class="tab" href="/Project-Visionary-Verse/public/approval/index">Approvals</a>
-    <a class="tab" href="/Project-Visionary-Verse/public/report/index">Reports</a>
-    <a class="tab" href="/Project-Visionary-Verse/public/dss/index">DSS</a>
-    <a class="tab" href="/Project-Visionary-Verse/public/notification/index">Notifications</a>
-    <a class="tab" href="/Project-Visionary-Verse/public/chatbot/index">Chatbot</a>
-  </div>
-</div>
+<?php
+$pageTitle = 'Tasks';
+$activeTab = 'tasks';
+$userRole = $_SESSION['user_role'] ?? 'staff';
+$roleLabel = ucfirst($userRole);
+require_once "../app/views/partials/topnav.php";
+?>
 
 <div class="wrap page">
   <div class="input-row" style="justify-content:space-between; flex-wrap:wrap">
     <div>
       <h1 class="h1">Tasks</h1>
-      <p class="sub">Create tasks under projects, assign members, set priority and deadlines.</p>
+      <p class="sub">Track assignments, priorities, statuses, and deadlines in one place.</p>
     </div>
 
     <div class="input-row" style="flex-wrap:wrap">
@@ -147,14 +93,14 @@ require_once "../app/views/layouts/header.php";
                 <button class="btn btn-outline btnEdit" data-id="<?= $task['task_id'] ?>">Edit</button>
 
                 <form method="POST"
-                action="/Project-Visionary-Verse/public/task/moveStatus/<?= $task['task_id'] ?>"
+                action="/pvv/public/task/moveStatus/<?= $task['task_id'] ?>"
                 style="display:inline;">
             <input type="hidden" name="current_status" value="<?= htmlspecialchars($task['status']) ?>">
             <button class="btn btn-ghost" type="submit">Move Status</button>
             </form>
 
                 <form method="POST"
-                        action="/Project-Visionary-Verse/public/task/delete/<?= $task['task_id'] ?>"
+                        action="/pvv/public/task/delete/<?= $task['task_id'] ?>"
                         style="display:inline;"
                         onsubmit="return confirm('Are you sure you want to delete this task?');">
                     <button class="btn btn-outline" type="submit">Delete</button>
@@ -172,8 +118,8 @@ require_once "../app/views/layouts/header.php";
   </div>
 
   <div class="callout info" style="margin-top:14px">
-    <strong></strong>
-    <p></p>
+    <strong>Status Workflow</strong>
+    <p>Use Move Status to keep project execution and approvals updated.</p>
   </div>
 
   <div class="footer">© Visionary Verse — Tasks</div>
@@ -184,12 +130,12 @@ require_once "../app/views/layouts/header.php";
     <div class="modal-head">
       <div>
         <div style="font-weight:950" id="taskModalTitle">Task Details</div>
-        <div class="sub">Add or edit a task</div>
+        <div class="sub">Create or update task details</div>
       </div>
       <button class="iconbtn" data-close="taskModal">✕</button>
     </div>
     <div class="modal-body">
-      <form id="taskForm" method="POST" action="/Project-Visionary-Verse/public/task/store">
+      <form id="taskForm" method="POST" action="/pvv/public/task/store">
         <input type="hidden" id="mTaskId" value="">
         <div class="form-grid">
           <div>
