@@ -1,6 +1,4 @@
-# 🚀 Visionary Verse
-
-### Agile Project Management System with DSS & AI Chatbot
+# 🚀 Visionary Verse Digital Marketing Agency Web Application Management System
 
 ![PHP](https://img.shields.io/badge/PHP-8.x-blue)
 ![MySQL](https://img.shields.io/badge/MySQL-Database-orange)
