@@ -25,24 +25,44 @@ Built using a **custom PHP MVC framework**, the system supports multiple user ro
 
 ### 👤 Role-Based System
 
-* **Admin**
+### Authentication
 
-  * Manage clients, projects, and tasks
-  * Access DSS insights
-* **Staff**
+<img width="1920" height="910" alt="1" src="https://github.com/user-attachments/assets/2b962f94-b53a-4b98-8aed-7e94e196ba1e" />
 
-  * View assigned tasks
-  * Update task status
-* **Client**
+### Admin
+  
+<img width="1920" height="910" alt="2" src="https://github.com/user-attachments/assets/cfd291bb-ba4d-43fd-a9c1-52c6abd1d63f" />
+<img width="1920" height="911" alt="3" src="https://github.com/user-attachments/assets/696966c3-c3dc-4cb8-84e7-63580c37e890" />
+<img width="1920" height="910" alt="4" src="https://github.com/user-attachments/assets/62e910ef-fd7d-4a06-b277-9a8204e33955" />
+<img width="1920" height="912" alt="5" src="https://github.com/user-attachments/assets/242e9969-aefd-4d3a-ba8d-203a277d86f1" />
+<img width="1920" height="911" alt="6" src="https://github.com/user-attachments/assets/fac56780-8561-418f-b4ae-149484eac6ee" />
+<img width="1920" height="913" alt="7" src="https://github.com/user-attachments/assets/9321fd2d-a332-4493-be3d-05e1c821c91b" />
+<img width="1920" height="911" alt="8" src="https://github.com/user-attachments/assets/1690b189-3a13-44c2-9d81-1bd5f57d99b7" />
+<img width="1920" height="911" alt="9" src="https://github.com/user-attachments/assets/e96c60a4-739f-41a8-bf85-53e6c231735b" />
+<img width="1920" height="912" alt="10" src="https://github.com/user-attachments/assets/e16dbf38-ee32-4f28-8f8d-75ec381047b8" />
 
-  * View projects
-  * Approve/reject deliverables
+### Staff
+
+<img width="1920" height="908" alt="11" src="https://github.com/user-attachments/assets/197863b4-adec-44b1-b900-e1f358d39f8c" />
+<img width="1920" height="906" alt="12" src="https://github.com/user-attachments/assets/37ec2095-41b4-41e1-bbd3-faad2a8f250a" />
+<img width="1920" height="913" alt="13" src="https://github.com/user-attachments/assets/daafe119-c200-4385-b783-6e3f47fc135b" />
+<img width="1920" height="910" alt="14" src="https://github.com/user-attachments/assets/142e192f-1115-40b7-8539-f7afca777a2b" />
+<img width="1920" height="913" alt="15" src="https://github.com/user-attachments/assets/3275d94f-846b-4afc-a6b6-69ba3828fd1e" />
+
+### Client
+
+<img width="1920" height="908" alt="16" src="https://github.com/user-attachments/assets/c69fcb40-2f0e-4f80-8dba-e04a12619a82" />
+<img width="1920" height="910" alt="17" src="https://github.com/user-attachments/assets/e296a20b-3b16-4e71-b23a-6c3de67b91d9" />
+<img width="1920" height="908" alt="18" src="https://github.com/user-attachments/assets/eae9aeaa-5a98-4c1b-8316-5783a53188e9" />
+<img width="1920" height="910" alt="19" src="https://github.com/user-attachments/assets/3f586684-06b2-4ee1-9195-bc0122f60051" />
+<img width="1920" height="911" alt="20" src="https://github.com/user-attachments/assets/b3062e6a-b475-47ce-8c6e-dd7b8327c607" />
+
 
 ---
 
 ### 📁 Core Modules
 
-* 🔐 Authentication System (Session-based)
+* 🔐 Role Based Authentication System (Admin, Staff and Client)
 * 📂 Client Management
 * 📊 Project Management
 * ✅ Task Management
@@ -116,7 +136,7 @@ git clone https://github.com/your-username/visionary-verse.git
 
 ### 2. Rename the root file name to pvv instead project-visionary-verse
 
-### 3. Move to WAMP directory
+### 3. Move pvv to WAMP directory
 
 ```
 C:\wamp64\www\
@@ -149,7 +169,7 @@ http://localhost/pvv/public
 | ------ | ------------------------ |
 | Admin  | Full system access       |
 | Staff  | Assigned tasks only      |
-| Client | Own projects & approvals |
+| Client | Own projects & review approvals |
 
 ---
 
@@ -159,7 +179,7 @@ http://localhost/pvv/public
 2. Tasks are assigned to staff
 3. Staff updates progress
 4. Deliverables are submitted
-5. Clients approve/reject
+5. Clients reviews deliverables
 6. DSS analyzes risks
 7. Chatbot assists users
 
@@ -185,7 +205,7 @@ http://localhost/pvv/public
 
 ---
 
-## 👨‍💻 Author
+## 👨‍💻 Authors
 
 **Project Manager - K.K.R Poornima - 2433190**
 **Quality Manager - R.G.D Rajapaksha - 2523676**
@@ -193,7 +213,7 @@ http://localhost/pvv/public
 **Scheduling Manager - R.A.C.K Jayalath - 2433285**
 **Startup Manager - B.A.D.R Berugoda - 2433414**
 
-Final Year Computer Science Students to fulfill Agile Project Management Module
+University of Bedfordshire (SLIIT CITY UNI) Final Year Computer Science Students to fulfill Agile Project Management Module
 
 ---
 
